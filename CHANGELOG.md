@@ -43,6 +43,7 @@ Patch release fixing a crash in `ghlang local` and cleaning up CI.
 - Use relative imports for same-package siblings
 - Added `.editorconfig` and `.prettierrc` for consistent formatting
 - Consolidated all magic constants into `ghlang/constants.py`
+- Lazy-load `matplotlib`/`PIL` in CLI to speed up shell tab completion
 
 <p align="right">(<a href="#changelog-top">back to top</a>)</p>
 

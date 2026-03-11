@@ -9,9 +9,6 @@ from ghlang.config import get_config_path
 from ghlang.config import load_config
 from ghlang.logging import logger
 from ghlang.static.themes import THEMES
-from ghlang.visualizers import generate_bar
-from ghlang.visualizers import generate_pie
-from ghlang.visualizers import load_github_colors
 
 
 if TYPE_CHECKING:
@@ -72,6 +69,10 @@ def generate_charts(
     save_json: bool = False,
 ) -> None:
     """Load colors and generate pie/bar charts with progress"""
+    from ghlang.visualizers import generate_bar  # noqa: PLC0415
+    from ghlang.visualizers import generate_pie  # noqa: PLC0415
+    from ghlang.visualizers import load_github_colors  # noqa: PLC0415
+
     with logger.progress() as progress:
         task = progress.add_task("Generating charts", total=3)
 
