@@ -2,10 +2,10 @@ from pathlib import Path
 
 import pytest
 
-from ghlang.config import DEFAULT_IGNORED_DIRS
 from ghlang.config import Config
 from ghlang.config import get_config_path
 from ghlang.config import load_config
+from ghlang.constants import DEFAULT_IGNORED_DIRS
 from ghlang.exceptions import ConfigError
 from ghlang.exceptions import MissingTokenError
 

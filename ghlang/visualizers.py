@@ -10,35 +10,29 @@ import requests
 import yaml
 
 from .config import get_config_path
+from .constants import BAR_FIGSIZE
+from .constants import BAR_HEIGHT
+from .constants import BAR_LABEL_FONTSIZE
+from .constants import BAR_LEGEND_FONTSIZE
+from .constants import BAR_LEGEND_NCOL
+from .constants import BAR_MIN_LABEL_WIDTH
+from .constants import BAR_TITLE_FONTSIZE
+from .constants import BAR_TITLE_PAD
+from .constants import LINGUIST_LANGUAGES_URL
+from .constants import PIE_FIGSIZE
+from .constants import PIE_LEGEND_FONTSIZE
+from .constants import PIE_LEGEND_TITLE_FONTSIZE
+from .constants import PIE_MIN_PERCENTAGE
+from .constants import PIE_PCT_FONTSIZE
+from .constants import PIE_TITLE_FONTSIZE
+from .constants import PIE_TITLE_PAD
+from .constants import PNG_DPI
+from .constants import REQUEST_TIMEOUT
+from .constants import ROUNDED_CORNER_RADIUS
 from .logging import logger
 from .static.lang_mapping import TOKEI_TO_LINGUIST
 from .static.themes import THEMES
 from .themes import load_all_themes
-
-
-LINGUIST_LANGUAGES_URL: str = (
-    "https://raw.githubusercontent.com/github/linguist/master/lib/linguist/languages.yml"
-)
-
-ROUNDED_CORNER_RADIUS: int = 40
-PNG_DPI: int = 200
-
-PIE_FIGSIZE: tuple[int, int] = (14, 10)
-PIE_TITLE_FONTSIZE: int = 24
-PIE_TITLE_PAD: int = 20
-PIE_MIN_PERCENTAGE: float = 1.5
-PIE_PCT_FONTSIZE: int = 9
-PIE_LEGEND_FONTSIZE: int = 9
-PIE_LEGEND_TITLE_FONTSIZE: int = 11
-
-BAR_FIGSIZE: tuple[int, int] = (12, 3)
-BAR_HEIGHT: float = 0.5
-BAR_TITLE_FONTSIZE: int = 20
-BAR_TITLE_PAD: int = 10
-BAR_MIN_LABEL_WIDTH: float = 0.05
-BAR_LABEL_FONTSIZE: int = 11
-BAR_LEGEND_FONTSIZE: int = 10
-BAR_LEGEND_NCOL: int = 3
 
 
 def _normalize_language(lang: str) -> str:
@@ -106,7 +100,7 @@ def load_github_colors(output_file: Path | None = None) -> dict[str, str]:
     logger.info("Grabbing language colors from GitHub")
 
     try:
-        r = requests.get(LINGUIST_LANGUAGES_URL, timeout=10)
+        r = requests.get(LINGUIST_LANGUAGES_URL, timeout=REQUEST_TIMEOUT)
         r.raise_for_status()
         data = yaml.safe_load(r.text)
         colors = {}

@@ -9,13 +9,13 @@ import time
 
 import requests
 
+from .constants import API_BASE_DELAY
+from .constants import API_BASE_URL
+from .constants import API_MAX_RETRIES
+from .constants import API_MAX_WORKERS
+from .constants import API_PER_PAGE
+from .constants import API_VERSION
 from .logging import logger
-
-
-DEFAULT_PER_PAGE = 100
-DEFAULT_MAX_RETRIES = 5
-DEFAULT_BASE_DELAY = 1.0
-DEFAULT_MAX_WORKERS = 10
 
 
 class GitHubClient:
@@ -28,21 +28,21 @@ class GitHubClient:
         visibility: str,
         ignored_repos: list[str],
     ):
-        self._api = "https://api.github.com"
+        self._api = API_BASE_URL
         self._session = requests.Session()
         self._session.headers.update(
             {
                 "Authorization": f"Bearer {token}",
                 "Accept": "application/vnd.github+json",
-                "X-GitHub-Api-Version": "2022-11-28",
+                "X-GitHub-Api-Version": API_VERSION,
             }
         )
         self._affiliation = affiliation
         self._visibility = visibility
         self._ignored_repos = ignored_repos
-        self._per_page = DEFAULT_PER_PAGE
-        self._max_retries = DEFAULT_MAX_RETRIES
-        self._base_delay = DEFAULT_BASE_DELAY
+        self._per_page = API_PER_PAGE
+        self._max_retries = API_MAX_RETRIES
+        self._base_delay = API_BASE_DELAY
 
     def _log_rate_limit(self, response: requests.Response) -> None:
         """Log rate limit info"""
@@ -243,7 +243,7 @@ class GitHubClient:
 
         # 10x speedup, no need for more
         # could be made configurable later if needed
-        num_workers = min(DEFAULT_MAX_WORKERS, len(repos))
+        num_workers = min(API_MAX_WORKERS, len(repos))
         logger.debug(f"Using {num_workers} concurrent workers for {len(repos)} repos")
 
         with ThreadPoolExecutor(max_workers=num_workers) as executor:

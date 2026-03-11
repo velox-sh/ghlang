@@ -1,20 +1,15 @@
 from datetime import datetime
-from datetime import timedelta
 import json
 from pathlib import Path
 from typing import cast
 
 import requests
 
+from .constants import REQUEST_TIMEOUT
+from .constants import THEME_CACHE_TTL
+from .constants import THEME_MANIFEST_URL
 from .logging import logger
 from .static.themes import THEMES
-
-
-THEME_MANIFEST_URL: str = (
-    "https://raw.githubusercontent.com/MihaiStreames/ghlang/master/themes/manifest.json"
-)
-
-CACHE_TTL: timedelta = timedelta(days=1)
 
 
 def _fetch_remote_themes(cache_path: Path, force: bool = False) -> dict[str, dict[str, str]]:
@@ -26,14 +21,14 @@ def _fetch_remote_themes(cache_path: Path, force: bool = False) -> dict[str, dic
             meta = json.loads(cache_meta.read_text())
             cached_time = datetime.fromisoformat(meta["timestamp"])
 
-            if datetime.now() - cached_time < CACHE_TTL:
+            if datetime.now() - cached_time < THEME_CACHE_TTL:
                 return cast(dict[str, dict[str, str]], json.loads(cache_path.read_text()))
 
         except Exception:
             pass
 
     try:
-        r = requests.get(THEME_MANIFEST_URL, timeout=10)
+        r = requests.get(THEME_MANIFEST_URL, timeout=REQUEST_TIMEOUT)
         r.raise_for_status()
         themes = cast(dict[str, dict[str, str]], r.json())
 

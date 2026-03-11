@@ -6,21 +6,12 @@ from pathlib import Path
 import sys
 import tomllib
 
+from .constants import DEFAULT_IGNORED_DIRS
+from .constants import DEFAULT_OUTPUT_DIR
 from .exceptions import ConfigError
 from .exceptions import MissingTokenError
 from .logging import logger
 
-
-DEFAULT_IGNORED_DIRS = [
-    "node_modules",
-    "vendor",
-    ".git",
-    "dist",
-    "build",
-    "__pycache__",
-]
-
-DEFAULT_OUTPUT_DIR = "~/Documents/ghlang-stats"
 
 VALID_KEYS: dict[str, set[str]] = {
     "github": {"token", "affiliation", "visibility", "ignored_repos"},

@@ -42,6 +42,7 @@ Patch release fixing a crash in `ghlang local` and cleaning up CI.
 - Removed automated AUR publishing from CI (now manual)
 - Use relative imports for same-package siblings
 - Added `.editorconfig` and `.prettierrc` for consistent formatting
+- Consolidated all magic constants into `ghlang/constants.py`
 
 <p align="right">(<a href="#changelog-top">back to top</a>)</p>
 
