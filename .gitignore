@@ -18,6 +18,8 @@ wheels/
 .pytest_cache/
 .ruff_cache/
 
-# Claude
+# LLMs
 .claude/
-CLAUDE.md
+
+# Misc
+.SRCINFO

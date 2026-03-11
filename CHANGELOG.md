@@ -10,6 +10,7 @@
 <details>
   <summary>Table of Contents</summary>
   <ol>
+    <li><a href="#v242--bugfix--cleanup">v2.4.2</a></li>
     <li><a href="#v241--tokount">v2.4.1</a></li>
     <li><a href="#v234--faster-github-processing">v2.3.4</a></li>
     <li><a href="#v233--small--fixes">v2.3.3</a></li>
@@ -27,6 +28,22 @@
     <li><a href="#v100--initial-release">v1.0.0</a></li>
   </ol>
 </details>
+
+## v2.4.2 — Bugfix & cleanup
+
+Patch release fixing a crash in `ghlang local` and cleaning up CI.
+
+**Fixed:**
+
+- `ghlang local` crashing with `'int' object has no attribute 'get'` when tokount output includes metadata keys (`gitRepos`, `gitignorePatterns`)
+
+**Changed:**
+
+- Removed automated AUR publishing from CI (now manual)
+- Use relative imports for same-package siblings
+- Added `.editorconfig` and `.prettierrc` for consistent formatting
+
+<p align="right">(<a href="#changelog-top">back to top</a>)</p>
 
 ## v2.4.1 — Tokount
 

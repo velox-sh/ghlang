@@ -1,15 +1,29 @@
 {
+  "printWidth": 100,
+  "tabWidth": 2,
+  "useTabs": false,
+  "semi": true,
   "singleQuote": false,
   "trailingComma": "all",
-  "tabWidth": 4,
-  "useTabs": true,
+  "bracketSpacing": true,
   "endOfLine": "lf",
-  "proseWrap": "always",
   "overrides": [
     {
       "files": "*.md",
       "options": {
         "proseWrap": "preserve"
+      }
+    },
+    {
+      "files": "*.toml",
+      "options": {
+        "tabWidth": 2
+      }
+    },
+    {
+      "files": "*.yml",
+      "options": {
+        "tabWidth": 2
       }
     }
   ]

@@ -117,6 +117,9 @@ class TokountClient:
 
         stats = {}
         for key, value in raw_output.items():
+            if not isinstance(value, dict):
+                continue
+
             if key == "SUM":
                 stats["_summary"] = {
                     "files": value.get("nFiles", 0),

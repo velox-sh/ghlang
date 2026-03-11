@@ -1,7 +1,7 @@
 # Maintainer: MihaiStreames <72852703+MihaiStreames@users.noreply.github.com>
 pkgname=python-ghlang
 _pypiname=ghlang
-pkgver=2.4.1
+pkgver=2.4.2
 pkgrel=1
 pkgdesc="Generate language statistics and visualizations from GitHub repositories or local files"
 arch=(any)

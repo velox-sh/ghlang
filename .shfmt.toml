@@ -1,7 +1,0 @@
-shell = "bash"
-indent = 0
-binary-next-line = true
-switch-case-indent = true
-space-redirects = false
-keep-padding = false
-func-next-line = false

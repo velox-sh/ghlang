@@ -1,6 +1,6 @@
 [project]
 name = "ghlang"
-version = "2.4.1"
+version = "2.4.2"
 description = "Generate language statistics and visualizations from GitHub repositories or local files"
 readme = "README.md"
 requires-python = ">=3.11"
@@ -41,8 +41,8 @@ dependencies = [
     "matplotlib>=3.10.8",
     "pillow>=12.1.1",
     "pyyaml>=6.0.3",
-    "rich>=14.3.2",
-    "typer>=0.24.0",
+    "typer>=0.24.1",
+    "rich>=14.3.3",
 ]
 
 [project.optional-dependencies]
