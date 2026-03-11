@@ -10,6 +10,7 @@
 <details>
   <summary>Table of Contents</summary>
   <ol>
+    <li><a href="#v243--packaging-fix">v2.4.3</a></li>
     <li><a href="#v242--bugfix--cleanup">v2.4.2</a></li>
     <li><a href="#v241--tokount">v2.4.1</a></li>
     <li><a href="#v234--faster-github-processing">v2.3.4</a></li>
@@ -28,6 +29,14 @@
     <li><a href="#v100--initial-release">v1.0.0</a></li>
   </ol>
 </details>
+
+## v2.4.3 — Packaging fix
+
+**Fixed:**
+
+- Include `tests/**` in the sdist via `pyproject.toml`
+
+<p align="right">(<a href="#changelog-top">back to top</a>)</p>
 
 ## v2.4.2 — Bugfix & cleanup
 
