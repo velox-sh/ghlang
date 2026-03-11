@@ -7,7 +7,6 @@ from ghlang.exceptions import ConfigError
 from ghlang.exceptions import TokountNotFoundError
 from ghlang.logging import logger
 from ghlang.tokount_client import TokountClient
-from ghlang.visualizers import normalize_language_stats
 
 from .utils import format_autocomplete
 from .utils import generate_charts
@@ -40,7 +39,6 @@ def _merge_stats(all_stats: list[dict[str, dict]]) -> dict[str, dict]:
 
 
 def local(
-    # TODO (#7): Handle mixed git/non-git directory trees better
     paths: list[Path] | None = typer.Argument(
         None,
         exists=True,
@@ -130,6 +128,8 @@ def local(
     ),
 ) -> None:
     """Analyze local files with tokount"""
+    from ghlang.visualizers import normalize_language_stats  # noqa: PLC0415
+
     if paths is None:
         paths = [Path()]
 

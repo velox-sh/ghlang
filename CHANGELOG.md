@@ -43,7 +43,9 @@ Patch release fixing a crash in `ghlang local` and cleaning up CI.
 - Use relative imports for same-package siblings
 - Added `.editorconfig` and `.prettierrc` for consistent formatting
 - Consolidated all magic constants into `ghlang/constants.py`
-- Lazy-load `matplotlib`/`PIL` in CLI to speed up shell tab completion
+- Lazy-load `matplotlib`/`PIL` in CLI to speed up shell tab completion (~3x faster autocomplete path)
+- Added `from __future__ import annotations` for Python 3.11–3.13 compatibility
+- Added autocomplete tests for `format_autocomplete` and `themes_autocomplete`
 
 <p align="right">(<a href="#changelog-top">back to top</a>)</p>
 
