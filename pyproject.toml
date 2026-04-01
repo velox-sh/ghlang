@@ -1,7 +1,7 @@
 [project]
 name = "ghlang"
 version = "2.4.6"
-description = "Generate pretty charts showing language statistics from GitHub repos or local code using Python"
+description = "Visualize your GitHub language stats, blazingly fast."
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
@@ -148,7 +148,6 @@ python_version = "3.14"
 files = ["ghlang", "tests"]
 exclude = ["build", "dist"]
 
-# strictness (recommended for a greenfield project)
 warn_return_any = true
 warn_unused_configs = true
 disallow_untyped_defs = true
