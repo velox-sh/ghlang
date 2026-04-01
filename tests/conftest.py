@@ -1,8 +1,14 @@
 from pathlib import Path
+import sys
 from typing import cast
 
 import pytest
-import tomllib
+
+
+if sys.version_info >= (3, 11):
+    import tomllib
+else:
+    import tomli as tomllib
 
 
 FIXTURES_DIR = Path(__file__).parent / "fixtures"
