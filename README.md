@@ -19,11 +19,7 @@
 
   <h1>ghlang</h1>
 
-  <h3 align="center">See what languages you've been coding in</h3>
-
-  <p align="center">
-    Generate pretty charts from your GitHub repos or local files
-  </p>
+  <h3 align="center">Visualize your GitHub language stats, blazingly fast. </h3>
 </div>
 
 <!-- TABLE OF CONTENTS -->
