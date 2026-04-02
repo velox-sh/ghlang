@@ -178,14 +178,16 @@ Both `github` and `local` commands share the same options:
 | `--output-dir` |       | where to save the charts (directory)                        |
 | `--output`     | `-o`  | custom output filename (creates `_<style>` variant)         |
 | `--title`      | `-t`  | custom chart title                                          |
-| `--style`      | `-s`  | chart style: `pixel` (default), `pie`, or `bar`             |
+| `--style`      | `-s`  | chart style: (default: `pixel`)                             |
 | `--top-n`      |       | how many languages to show (default: 6)                     |
 | `--save-json`  |       | save raw stats as JSON files                                |
-| `--theme`      |       | chart color theme (default: light)                          |
+| `--theme`      |       | chart color theme (default: `light`)                        |
 | `--json-only`  |       | output JSON only, skip chart generation                     |
 | `--stdout`     |       | output stats to stdout (implies `--json-only --quiet`)      |
 | `--quiet`      | `-q`  | suppress log output (only show errors)                      |
 | `--verbose`    | `-v`  | show more details                                           |
+
+> Note: The pre-v2.5.0 styles (classic styles) are still there! Use them via `--style bar` or `--style pie`.
 
 The `local` command also takes an optional `[PATH]` argument (defaults to `.`) and has one extra flag:
 
@@ -193,13 +195,23 @@ The `local` command also takes an optional `[PATH]` argument (defaults to `.`) a
 | ---------------- | ----- | ------------------------------------------ |
 | `--follow-links` | `-L`  | follow symlinks when analyzing (unix only) |
 
-The `config` command has its own options:
+The `config` command manages your config file:
 
 | Flag     | What it does                    |
 | -------- | ------------------------------- |
 | `--show` | print config as formatted table |
 | `--path` | print config file path          |
 | `--raw`  | print raw TOML contents         |
+
+Running `ghlang config` without flags opens the config file in your default editor.
+
+The `theme` command manages chart themes:
+
+| Flag        | What it does                                |
+| ----------- | ------------------------------------------- |
+| `--list`    | list all available themes                   |
+| `--info`    | show details for a specific theme           |
+| `--refresh` | force-refresh remote themes (bypass cache)  |
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
