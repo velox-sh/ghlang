@@ -15,7 +15,7 @@
 
 <!-- PROJECT LOGO -->
 <div align="center">
-  <img src="assets/ghlang-icon.svg" alt="ghlang logo" width="120" />
+  <img src="https://raw.githubusercontent.com/velox-sh/ghlang/master/assets/ghlang-icon.svg" alt="ghlang logo" width="120" />
 
   <h1>ghlang</h1>
 
@@ -187,7 +187,7 @@ Both `github` and `local` commands share the same options:
 | `--quiet`      | `-q`  | suppress log output (only show errors)                      |
 | `--verbose`    | `-v`  | show more details                                           |
 
-> Note: The pre-v2.5.0 styles (classic styles) are still there! Use them via `--style bar` or `--style pie`.
+> *Note:* The pre-v2.5.0 styles (classic styles) are still there! Use them via `--style bar` or `--style pie`.
 
 The `local` command also takes an optional `[PATH]` argument (defaults to `.`) and has one extra flag:
 
@@ -203,7 +203,7 @@ The `config` command manages your config file:
 | `--path` | print config file path          |
 | `--raw`  | print raw TOML contents         |
 
-Running `ghlang config` without flags opens the config file in your default editor.
+> *Note:* Running `ghlang config` without flags opens the config file in your default editor.
 
 The `theme` command manages chart themes:
 
