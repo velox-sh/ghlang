@@ -55,9 +55,14 @@
 Ever wondered what languages you actually use? **ghlang** makes pretty charts to show you:
 
 <div align="center">
-  <img src="https://raw.githubusercontent.com/velox-sh/ghlang/master/assets/example_pie.png" alt="Pie chart example" width="60%" />
-  <img src="https://raw.githubusercontent.com/velox-sh/ghlang/master/assets/example_bar.png" alt="Bar chart example" width="60%" />
-  <p><i>my actual language stats across all repos</i></p>
+  <img src="https://raw.githubusercontent.com/velox-sh/ghlang/master/assets/example_pixel.png" alt="Pixel chart example" width="40%" />
+  <p><i>isometric pixel tower - the default style</i></p>
+</div>
+
+<div align="center">
+  <img src="https://raw.githubusercontent.com/velox-sh/ghlang/master/assets/example_pie.png" alt="Pie chart example" width="50%" />
+  <img src="https://raw.githubusercontent.com/velox-sh/ghlang/master/assets/example_bar.png" alt="Bar chart example" width="50%" />
+  <p><i>pie and bar styles - all from my actual GitHub repos</i></p>
 </div>
 
 - **GitHub mode**: Pulls stats from all your repos via the API (counts bytes)
@@ -100,7 +105,7 @@ Getting this running is pretty straightforward.
 
 ### Prerequisites
 
-- Python 3.11+
+- Python 3.10+
 - For GitHub mode: a GitHub token
 - For local mode: [`tokount`](https://github.com/velox-sh/tokount)
 
@@ -177,12 +182,12 @@ Both `github` and `local` commands share the same options:
 | -------------- | ----- | ----------------------------------------------------------- |
 | `--config`     |       | use a different config file                                 |
 | `--output-dir` |       | where to save the charts (directory)                        |
-| `--output`     | `-o`  | custom output filename (creates `_pie` and `_bar` variants) |
+| `--output`     | `-o`  | custom output filename (creates `_<style>` variant)         |
 | `--title`      | `-t`  | custom chart title                                          |
-| `--top-n`      |       | how many languages in the bar chart (default: 5)            |
+| `--style`      | `-s`  | chart style: `pixel` (default), `pie`, or `bar`             |
+| `--top-n`      |       | how many languages to show (default: 6)                     |
 | `--save-json`  |       | save raw stats as JSON files                                |
 | `--theme`      |       | chart color theme (default: light)                          |
-| `--format`     | `-f`  | output format, overrides `--output` extension (png or svg)  |
 | `--json-only`  |       | output JSON only, skip chart generation                     |
 | `--stdout`     |       | output stats to stdout (implies `--json-only --quiet`)      |
 | `--quiet`      | `-q`  | suppress log output (only show errors)                      |
@@ -226,16 +231,17 @@ After installing, restart your shell or source your config file.
 
 ## What You Get
 
-Charts end up in your output directory (`.png` by default, or `.svg` with `--format svg`):
+Charts end up in your output directory as `.png`:
 
-| File                  | What it is                                               |
-| --------------------- | -------------------------------------------------------- |
-| `language_pie.png`    | pie chart with all languages                             |
-| `language_bar.png`    | bar chart with top N languages                           |
-| `language_stats.json` | raw stats (with `--save-json`)                           |
-| `tokount_stats.json`  | detailed tokount output (local mode, with `--save-json`) |
-| `repositories.json`   | list of repos analyzed (GitHub mode, with `--save-json`) |
-| `github_colors.json`  | language colors from GitHub (with `--save-json`)         |
+| File                    | What it is                                               |
+| ----------------------- | -------------------------------------------------------- |
+| `language_pixel.png`    | pixel tower chart (default style)                        |
+| `language_pie.png`      | pie chart with all languages (`--style pie`)             |
+| `language_bar.png`      | bar chart with top N languages (`--style bar`)           |
+| `language_stats.json`   | raw stats (with `--save-json`)                           |
+| `tokount_stats.json`    | detailed tokount output (local mode, with `--save-json`) |
+| `repositories.json`     | list of repos analyzed (GitHub mode, with `--save-json`) |
+| `github_colors.json`    | language colors from GitHub (with `--save-json`)         |
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -292,6 +298,9 @@ ghlang comes with built-in themes and supports community themes:
 ```bash
 # use a theme
 ghlang github --theme dark
+
+# combine with a style
+ghlang github --theme dark --style pie
 ```
 
 **Set default in `config.toml`:**
