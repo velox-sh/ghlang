@@ -55,14 +55,8 @@
 Ever wondered what languages you actually use? **ghlang** makes pretty charts to show you:
 
 <div align="center">
-  <img src="https://raw.githubusercontent.com/velox-sh/ghlang/master/assets/example_pixel.png" alt="Pixel chart example" width="40%" />
-  <p><i>isometric pixel tower - the default style</i></p>
-</div>
-
-<div align="center">
-  <img src="https://raw.githubusercontent.com/velox-sh/ghlang/master/assets/example_pie.png" alt="Pie chart example" width="50%" />
-  <img src="https://raw.githubusercontent.com/velox-sh/ghlang/master/assets/example_bar.png" alt="Bar chart example" width="50%" />
-  <p><i>pie and bar styles - all from my actual GitHub repos</i></p>
+  <img src="https://raw.githubusercontent.com/velox-sh/ghlang/master/assets/example_pixel.png" alt="Pixel chart example" width="50%" />
+  <p><i>my actual language stats across all repos</i></p>
 </div>
 
 - **GitHub mode**: Pulls stats from all your repos via the API (counts bytes)
