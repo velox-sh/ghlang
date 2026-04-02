@@ -7,13 +7,13 @@ from ghlang.exceptions import ConfigError
 from ghlang.github_client import GitHubClient
 from ghlang.logging import logger
 
-from .utils import format_autocomplete
 from .utils import generate_charts
 from .utils import get_chart_title
 from .utils import get_output_path
 from .utils import handle_cli_errors
 from .utils import save_json_stats
 from .utils import setup_cli_environment
+from .utils import styles_autocomplete
 from .utils import themes_autocomplete
 
 
@@ -89,12 +89,12 @@ def github(
         help="Chart theme (default: light)",
         autocompletion=themes_autocomplete,
     ),
-    fmt: str | None = typer.Option(
-        None,
-        "--format",
-        "-f",
-        help="Output format, overrides --output extension (png or svg)",
-        autocompletion=format_autocomplete,
+    style: str = typer.Option(
+        "pixel",
+        "--style",
+        "-s",
+        help="Chart style (default: pixel)",
+        autocompletion=styles_autocomplete,
     ),
 ) -> None:
     """Analyze your GitHub repos"""
@@ -141,7 +141,7 @@ def github(
                 cfg,
                 title=get_chart_title(repos, title, "GitHub"),
                 output=output,
-                fmt=fmt,
+                style=style,
                 top_n=top_n,
                 save_json=save_json,
             )

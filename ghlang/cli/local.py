@@ -9,13 +9,13 @@ from ghlang.exceptions import TokountNotFoundError
 from ghlang.logging import logger
 from ghlang.tokount_client import TokountClient
 
-from .utils import format_autocomplete
 from .utils import generate_charts
 from .utils import get_chart_title
 from .utils import get_output_path
 from .utils import handle_cli_errors
 from .utils import save_json_stats
 from .utils import setup_cli_environment
+from .utils import styles_autocomplete
 from .utils import themes_autocomplete
 
 
@@ -121,16 +121,16 @@ def local(
         help="Chart theme (default: light)",
         autocompletion=themes_autocomplete,
     ),
-    fmt: str | None = typer.Option(
-        None,
-        "--format",
-        "-f",
-        help="Output format, overrides --output extension (png or svg)",
-        autocompletion=format_autocomplete,
+    style: str = typer.Option(
+        "pixel",
+        "--style",
+        "-s",
+        help="Chart style (default: pixel)",
+        autocompletion=styles_autocomplete,
     ),
 ) -> None:
     """Analyze local files with tokount"""
-    from ghlang.visualizers import normalize_language_stats  # noqa: PLC0415
+    from ghlang.display.utils import normalize_language_stats  # noqa: PLC0415
 
     if paths is None:
         paths = [Path()]
@@ -203,10 +203,9 @@ def local(
             generate_charts(
                 language_stats,
                 cfg,
-                colors_required=False,
                 title=get_chart_title(paths, title, "Local"),
                 output=output,
-                fmt=fmt,
+                style=style,
                 top_n=top_n,
                 save_json=save_json,
             )

@@ -5,9 +5,9 @@ from typing import cast
 
 import requests
 
+from .constants import MANIFEST_URL
 from .constants import REQUEST_TIMEOUT
 from .constants import THEME_CACHE_TTL
-from .constants import THEME_MANIFEST_URL
 from .logging import logger
 from .static.themes import THEMES
 
@@ -28,7 +28,7 @@ def _fetch_remote_themes(cache_path: Path, force: bool = False) -> dict[str, dic
             pass
 
     try:
-        r = requests.get(THEME_MANIFEST_URL, timeout=REQUEST_TIMEOUT)
+        r = requests.get(MANIFEST_URL, timeout=REQUEST_TIMEOUT)
         r.raise_for_status()
         themes = cast(dict[str, dict[str, str]], r.json())
 
@@ -37,7 +37,7 @@ def _fetch_remote_themes(cache_path: Path, force: bool = False) -> dict[str, dic
             json.dumps(
                 {
                     "timestamp": datetime.now().isoformat(),
-                    "url": THEME_MANIFEST_URL,
+                    "url": MANIFEST_URL,
                 }
             )
         )

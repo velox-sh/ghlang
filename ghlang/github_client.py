@@ -10,10 +10,10 @@ import time
 import requests
 
 from .constants import API_BASE_DELAY
-from .constants import API_BASE_URL
 from .constants import API_MAX_RETRIES
 from .constants import API_MAX_WORKERS
 from .constants import API_PER_PAGE
+from .constants import API_URL
 from .constants import API_VERSION
 from .logging import logger
 
@@ -28,7 +28,7 @@ class GitHubClient:
         visibility: str,
         ignored_repos: list[str],
     ):
-        self._api = API_BASE_URL
+        self._api = API_URL
         self._session = requests.Session()
         self._session.headers.update(
             {
@@ -69,7 +69,7 @@ class GitHubClient:
             if r.status_code in (429, 500, 502, 503, 504):
                 delay = self._base_delay * (2**attempt)
                 logger.warning(
-                    f"Got {r.status_code}, retrying in {delay:.1f}s "
+                    f"Got {r.status_code}, retrying in {delay}s "
                     f"(attempt {attempt + 1}/{self._max_retries})..."
                 )
                 time.sleep(delay)

@@ -1,3 +1,5 @@
+"""CLI entry point and command registration"""
+
 import typer
 
 from ghlang import __version__

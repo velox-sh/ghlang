@@ -39,17 +39,18 @@ classifiers = [
 ]
 dependencies = [
     "requests>=2.33.1",
-    "matplotlib>=3.10.8",
-    "pillow>=12.2.0",
     "pyyaml>=6.0.3",
+    "tomli>=2.4.1; python_version < '3.11'",
     "typer>=0.24.1",
     "rich>=14.3.3",
-    "tomli>=2.4.1; python_version < '3.11'",
+    "matplotlib>=3.10.8",
+    "pillow>=12.2.0",
+    "bdfparser>=2.2.0",
 ]
 
 [project.optional-dependencies]
 dev = [
-    "types-requests>=2.33.0.20260327",
+    "types-requests>=2.33.0.20260402",
     "types-PyYAML>=6.0.12.20250915",
     "pytest>=9.0.2",
     "pytest-cov>=7.1.0",

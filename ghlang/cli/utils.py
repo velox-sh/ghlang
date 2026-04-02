@@ -11,6 +11,8 @@ import typer
 
 from ghlang.config import get_config_path
 from ghlang.config import load_config
+from ghlang.display import STYLES
+from ghlang.display.constants import TOP_N
 from ghlang.logging import logger
 from ghlang.static.themes import THEMES
 
@@ -59,7 +61,7 @@ def format_autocomplete(incomplete: str) -> list[str]:
 
 
 def themes_autocomplete(incomplete: str) -> list[str]:
-    """Callback for theme autocompletion"""
+    """Callback for theme names"""
     themes = list(THEMES.keys())
 
     config_path = get_config_path()
@@ -68,13 +70,17 @@ def themes_autocomplete(incomplete: str) -> list[str]:
         try:
             with remote_path.open() as f:
                 remote = json.load(f)
-
             themes.extend(remote.keys())
 
         except Exception:
             pass
 
     return [t for t in themes if t.startswith(incomplete)]
+
+
+def styles_autocomplete(incomplete: str) -> list[str]:
+    """Callback for chart styles"""
+    return [s for s in STYLES if s.startswith(incomplete)]
 
 
 def get_chart_title(items: list | None, custom_title: str | None, source: str) -> str:
@@ -99,20 +105,23 @@ def get_chart_title(items: list | None, custom_title: str | None, source: str) -
 def generate_charts(
     language_stats: dict[str, int],
     cfg: Config,
-    colors_required: bool = True,
     title: str | None = None,
     output: Path | None = None,
-    fmt: str | None = None,
-    top_n: int = 5,
+    style: str = "pixel",
+    top_n: int = TOP_N,
     save_json: bool = False,
 ) -> None:
-    """Load colors and generate pie/bar charts with progress"""
-    from ghlang.visualizers import generate_bar  # noqa: PLC0415
-    from ghlang.visualizers import generate_pie  # noqa: PLC0415
-    from ghlang.visualizers import load_github_colors  # noqa: PLC0415
+    """Load colors and generate a chart in the requested style"""
+    from ghlang.display import get_style_registry  # noqa: PLC0415
+    from ghlang.display.utils import load_github_colors  # noqa: PLC0415
+
+    style_fn = get_style_registry().get(style)
+    if style_fn is None:
+        logger.error(f"Unknown style '{style}', available: {', '.join(STYLES)}")
+        raise typer.Exit(1)
 
     with logger.progress() as progress:
-        task = progress.add_task("Generating charts", total=3)
+        task = progress.add_task("Generating chart", total=2)
 
         progress.update(task, description="Loading language colors...")
         colors_file = cfg.output_dir / "github_colors.json" if save_json else None
@@ -120,26 +129,10 @@ def generate_charts(
         progress.advance(task)
 
         if not colors:
-            if colors_required:
-                logger.error("Couldn't load GitHub colors, can't continue without them")
-                raise typer.Exit(1)
-
             logger.warning("Couldn't load GitHub colors, charts will be gray")
             colors = {}
 
-        # determine output format
-        # priority: --format > --output suffix > default png
-        if fmt:
-            if fmt not in ("png", "svg"):
-                logger.warning(f"We only support png and svg, not '{fmt}', using png instead")
-                suffix = ".png"
-            else:
-                suffix = f".{fmt}"
-        elif output and output.suffix:
-            suffix = output.suffix
-        else:
-            suffix = ".png"
-
+        # all output is PNG for now (SVG support TODO)
         if output:
             if output.is_absolute():
                 parent = output.parent
@@ -147,27 +140,15 @@ def generate_charts(
                 parent = cfg.output_dir / output.parent
             else:
                 parent = cfg.output_dir
-
             stem = output.stem
-            pie_output = parent / f"{stem}_pie{suffix}"
-            bar_output = parent / f"{stem}_bar{suffix}"
         else:
-            pie_output = cfg.output_dir / f"language_pie{suffix}"
-            bar_output = cfg.output_dir / f"language_bar{suffix}"
+            parent = cfg.output_dir
+            stem = "language"
 
-        progress.update(task, description="Generating pie chart...")
-        generate_pie(language_stats, colors, pie_output, title=title, theme=cfg.theme)
-        progress.advance(task)
+        chart_output = parent / f"{stem}_{style}.png"
 
-        progress.update(task, description="Generating bar chart...")
-        generate_bar(
-            language_stats,
-            colors,
-            bar_output,
-            top_n=top_n,
-            title=title,
-            theme=cfg.theme,
-        )
+        progress.update(task, description=f"Generating {style} chart...")
+        style_fn(language_stats, colors, chart_output, title, cfg.theme, top_n=top_n)
         progress.advance(task)
 
 
