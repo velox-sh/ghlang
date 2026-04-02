@@ -1,6 +1,6 @@
 [project]
 name = "ghlang"
-version = "2.4.6"
+version = "2.5.0"
 description = "Visualize your GitHub language stats, blazingly fast."
 readme = "README.md"
 requires-python = ">=3.10"

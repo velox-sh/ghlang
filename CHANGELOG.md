@@ -10,6 +10,7 @@
 <details>
   <summary>Table of Contents</summary>
   <ol>
+    <li><a href="#v250--chart-styles">v2.5.0</a></li>
     <li><a href="#v246--python-310-support">v2.4.6</a></li>
     <li><a href="#v245--themes-cli">v2.4.5</a></li>
     <li><a href="#v244--tokount-v110-compat">v2.4.4</a></li>
@@ -32,6 +33,25 @@
     <li><a href="#v100--initial-release">v1.0.0</a></li>
   </ol>
 </details>
+
+## v2.5.0 — Chart styles
+
+**New stuff:**
+
+- `--style` / `-s` flag on `github` and `local` commands — choose between `pixel` (default), `pie`, and `bar`
+- `pixel` chart style — isometric tower chart with Cozette bitmap font, per-language color blocks, and segment connectors
+- Style registry: each style is self-contained and discovered dynamically via `get_style_registry()`
+- Shell autocomplete for `--style`
+
+**Changed:**
+
+- `display/` split: chart rendering lives in `styles/`, Rich console output in `display/`
+- `build_display_segments()` shared utility — top_n and hide threshold applied consistently across all styles
+- "Other" aggregate now uses theme fallback color in all styles (was inconsistent between pie/bar)
+- Pie chart shows all languages regardless of top_n; only hides percentage label text below threshold
+- Config and theme table rendering extracted from CLI into `display/config.py` and `display/themes.py`
+
+<p align="right">(<a href="#changelog-top">back to top</a>)</p>
 
 ## v2.4.6 — Python 3.10 support
 
