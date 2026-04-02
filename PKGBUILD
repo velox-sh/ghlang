@@ -2,7 +2,7 @@
 pkgname=python-ghlang
 _pypiname=ghlang
 pkgver=2.5.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Visualize your GitHub language stats, blazingly fast."
 arch=(any)
 url="https://github.com/velox-sh/ghlang"
@@ -15,6 +15,7 @@ depends=(
 	python-yaml
 	python-rich
 	python-typer
+	python-bdfparser
 )
 makedepends=(
 	python-build
