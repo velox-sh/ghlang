@@ -132,7 +132,7 @@ class TestLoadAllThemes:
 
     def test_network_error_returns_builtin_only(self, config_dir: Path) -> None:
         """Should return built-in themes when remote fetch fails"""
-        with patch("ghlang.net.client.get", side_effect=Exception("network error")):
+        with patch("ghlang.net.client.get", side_effect=OSError("network error")):
             themes = load_all_themes(config_dir, force_refresh=True)
 
         assert set(themes.keys()) == set(THEMES.keys())

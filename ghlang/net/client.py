@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from http.client import HTTPMessage
 from http.client import HTTPResponse
 from http.client import HTTPSConnection
 import json
@@ -26,7 +27,7 @@ class Response:
         The request URL.
     """
 
-    def __init__(self, status_code: int, headers: Any, body: str, url: str) -> None:
+    def __init__(self, status_code: int, headers: HTTPMessage, body: str, url: str) -> None:
         self.status_code = status_code
         self.url = url
         self._headers = headers
@@ -34,12 +35,12 @@ class Response:
 
     @classmethod
     def from_urllib(cls, raw: HTTPResponse | _UrllibHTTPError, url: str) -> Response:
-        """Build from a urllib HTTPResponse or HTTPError"""
+        """Build from a urllib HTTPResponse or HTTPError."""
         status = raw.code if isinstance(raw, _UrllibHTTPError) else raw.status
-        return cls(status, raw.headers, raw.read().decode("utf-8"), url)
+        return cls(status, raw.headers, raw.read().decode("utf-8"), url)  # type: ignore[arg-type]
 
     @property
-    def headers(self) -> Any:
+    def headers(self) -> HTTPMessage:
         return self._headers
 
     @property
@@ -47,11 +48,11 @@ class Response:
         return self._body
 
     def json(self) -> Any:
-        """Parse response body as JSON"""
+        """Parse response body as JSON."""
         return json.loads(self._body)
 
     def raise_for_status(self) -> None:
-        """Raise HTTPError for 4xx/5xx responses"""
+        """Raise HTTPError for 4xx/5xx responses."""
         if self.status_code >= 400:
             raise exceptions.HTTPError(self)
 
@@ -99,7 +100,7 @@ class Session:
         self._conns: dict[str, HTTPSConnection] = {}
 
     def update_headers(self, headers: dict[str, str]) -> None:
-        """Merge headers into the session defaults"""
+        """Merge headers into the session defaults."""
         self.headers.update(headers)
 
     def _get_conn(self, host: str) -> HTTPSConnection:

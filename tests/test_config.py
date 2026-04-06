@@ -20,7 +20,7 @@ class TestConfigDataclass:
         assert config.affiliation == "owner,collaborator,organization_member"
         assert config.visibility == "all"
         assert config.ignored_repos == []
-        assert config.ignored_dirs == DEFAULT_IGNORED_DIRS
+        assert config.ignored_dirs == list(DEFAULT_IGNORED_DIRS)
         assert config.verbose is False
         assert config.theme == "light"
 
@@ -62,7 +62,7 @@ class TestLoadConfig:
         assert config.affiliation == "owner,collaborator,organization_member"
         assert config.visibility == "all"
         assert config.ignored_repos == []
-        assert config.ignored_dirs == DEFAULT_IGNORED_DIRS
+        assert config.ignored_dirs == list(DEFAULT_IGNORED_DIRS)
 
     def test_missing_token_raises_error(self, tmp_config: Path) -> None:
         """Should raise MissingTokenError when token is missing"""

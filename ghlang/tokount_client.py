@@ -28,7 +28,7 @@ class TokountClient:
         Resolved path to the tokount binary.
     """
 
-    def __init__(self, ignored_dirs: list[str], follow_symlinks: bool = False):
+    def __init__(self, ignored_dirs: list[str], follow_symlinks: bool = False) -> None:
         self._ignored_dirs = ignored_dirs
         self._follow_symlinks = follow_symlinks
         self._tokount_path = _find_tokount()
@@ -112,7 +112,7 @@ class TokountClient:
         path: Path,
         stats_output: Path | None = None,
     ) -> dict[str, dict]:
-        """Run tokount on a path and return per-language line counts
+        """Run tokount on a path and return per-language line counts.
 
         Parameters
         ----------

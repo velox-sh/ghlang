@@ -6,6 +6,7 @@ import subprocess
 import typer
 
 from ghlang import config as ghlang_config
+from ghlang import exceptions
 from ghlang.display import config as display_config
 
 
@@ -62,7 +63,7 @@ def config(
 
         try:
             cfg = ghlang_config.load_config(config_path=config_path, require_token=False)
-        except Exception as e:
+        except (exceptions.ConfigError, ValueError) as e:
             typer.echo(f"Error loading config: {e}")
             raise typer.Exit(1)
 

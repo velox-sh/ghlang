@@ -18,13 +18,13 @@ if TYPE_CHECKING:
     from ghlang.config import Config
 
 
-def format_autocomplete(incomplete: str) -> list[str]:
+def _format_autocomplete(incomplete: str) -> list[str]:
     """Return matching output format completions"""
     return [f for f in ["png", "svg"] if f.startswith(incomplete)]
 
 
 def themes_autocomplete(incomplete: str) -> list[str]:
-    """Return matching theme name completions"""
+    """Return matching theme name completions."""
     themes = list(static_themes.THEMES.keys())
 
     config_path = config.get_config_path()
@@ -35,14 +35,14 @@ def themes_autocomplete(incomplete: str) -> list[str]:
                 remote = json.load(f)
             themes.extend(remote.keys())
 
-        except Exception:
+        except (json.JSONDecodeError, OSError):
             pass
 
     return [t for t in themes if t.startswith(incomplete)]
 
 
 def styles_autocomplete(incomplete: str) -> list[str]:
-    """Return matching chart style completions"""
+    """Return matching chart style completions."""
     return [s for s in styles.STYLES if s.startswith(incomplete)]
 
 

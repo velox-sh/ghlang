@@ -1,1 +1,1 @@
-"""Rich console output for CLI commands"""
+"""Rich console output for CLI commands."""

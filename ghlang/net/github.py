@@ -29,7 +29,7 @@ class GitHubClient:
         affiliation: str,
         visibility: str,
         ignored_repos: list[str],
-    ):
+    ) -> None:
         self._api = constants.API_URL
         self._session = client.Session()
         self._session.update_headers(
@@ -71,7 +71,7 @@ class GitHubClient:
 
         return False
 
-    def get_repo_info(self, full_name: str) -> dict:
+    def get_repo_info(self, full_name: str) -> dict[str, object]:
         """Fetch metadata for a single repo.
 
         Parameters
@@ -94,7 +94,7 @@ class GitHubClient:
         r = self._session.get(f"{self._api}/repos/{full_name}")
         return dict(r.json())
 
-    def list_repos(self) -> list[dict]:
+    def list_repos(self) -> list[dict[str, object]]:
         """Paginate all repos matching affiliation/visibility filters.
 
         Returns
@@ -129,15 +129,15 @@ class GitHubClient:
         unique_repos = []
 
         for repo in repos:
-            fn = repo["full_name"]
+            full_name = repo["full_name"]
 
-            if fn in seen:
+            if full_name in seen:
                 continue
 
-            seen.add(fn)
+            seen.add(full_name)
 
-            if self._should_ignore_repo(fn):
-                log.logger.debug(f"Ignoring repo: {fn}")
+            if self._should_ignore_repo(full_name):
+                log.logger.debug(f"Ignoring repo: {full_name}")
                 continue
 
             unique_repos.append(repo)
@@ -160,7 +160,7 @@ class GitHubClient:
         r = self._session.get(f"{self._api}/repos/{full_name}/languages")
         return dict(r.json())
 
-    def fetch_specific_repos(self, specific_repos: list[str]) -> list[dict]:
+    def fetch_specific_repos(self, specific_repos: list[str]) -> list[dict[str, object]]:
         """Resolve a list of owner/repo strings to repo dicts.
 
         Parameters

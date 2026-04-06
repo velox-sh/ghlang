@@ -77,7 +77,7 @@ def _aggregate_languages(
                 except exceptions.HTTPError as e:
                     skipped += 1
                     log.logger.warning(f"Skipped {full_name}: {e}")
-                except Exception as e:
+                except (exceptions.RequestError, KeyError, ValueError) as e:
                     skipped += 1
                     log.logger.warning(f"Skipped {full_name}: {e}")
 

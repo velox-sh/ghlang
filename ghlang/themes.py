@@ -5,6 +5,7 @@ from typing import cast
 
 from . import config
 from . import constants
+from . import exceptions
 from . import log
 from .net import client as net_client
 from .static import themes as static_themes
@@ -22,7 +23,7 @@ def _fetch_remote_themes(cache_path: Path, force: bool = False) -> dict[str, dic
             if datetime.now() - cached_time < constants.THEME_CACHE_TTL:
                 return cast(dict[str, dict[str, str]], json.loads(cache_path.read_text()))
 
-        except Exception:
+        except (json.JSONDecodeError, KeyError, ValueError, OSError):
             pass
 
     try:
@@ -42,7 +43,7 @@ def _fetch_remote_themes(cache_path: Path, force: bool = False) -> dict[str, dic
 
         return themes
 
-    except Exception as e:
+    except (exceptions.RequestError, exceptions.HTTPError, json.JSONDecodeError, OSError) as e:
         log.logger.warning(f"Couldn't fetch remote themes: {e}")
         return {}
 
@@ -74,7 +75,7 @@ def load_all_themes(config_dir: Path, force_refresh: bool = False) -> dict[str, 
             custom = json.loads(custom_path.read_text())
             themes.update(custom)
 
-        except Exception as e:
+        except (json.JSONDecodeError, OSError) as e:
             log.logger.warning(f"Couldn't load custom themes: {e}")
 
     return themes

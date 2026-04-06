@@ -1,1 +1,1 @@
-"""Static assets for ghlang"""
+"""Static assets for ghlang."""

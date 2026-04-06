@@ -1,9 +1,10 @@
-"""Chart rendering styles"""
+"""Chart rendering styles."""
 
 from collections.abc import Callable
+from typing import Final
 
 
-STYLES: tuple[str, ...] = ("pixel", "pie", "bar")
+STYLES: Final[tuple[str, ...]] = ("pixel", "pie", "bar")
 
 
 def get_style_registry() -> dict[str, Callable[..., None]]:

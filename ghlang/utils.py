@@ -3,12 +3,13 @@ import json
 from pathlib import Path
 
 from . import config
+from . import exceptions
 from . import log
 from .static import themes as static_themes
 
 
 def save_json(data: object, path: Path) -> None:
-    """Write data as JSON, creating parent dirs"""
+    """Write data as JSON, creating parent dirs."""
     path.parent.mkdir(parents=True, exist_ok=True)
 
     with path.open("w") as f:
@@ -18,15 +19,15 @@ def save_json(data: object, path: Path) -> None:
 
 
 def get_config_dir() -> Path:
-    """Get the config directory path"""
+    """Get the config directory path."""
     return config.get_config_path().parent
 
 
 def get_active_theme() -> str:
-    """Get the currently active theme name"""
+    """Get the currently active theme name."""
     try:
         return config.load_config(require_token=False).theme
-    except Exception:
+    except exceptions.ConfigError:
         return "light"
 
 
@@ -50,13 +51,13 @@ def load_themes_by_source(
     remote: dict[str, dict[str, str]] = {}
     remote_path = config_dir / "themes.json"
     if remote_path.exists():
-        with contextlib.suppress(Exception):
+        with contextlib.suppress(json.JSONDecodeError, OSError):
             remote = json.loads(remote_path.read_text())
 
     custom: dict[str, dict[str, str]] = {}
     custom_path = config_dir / "custom_themes.json"
     if custom_path.exists():
-        with contextlib.suppress(Exception):
+        with contextlib.suppress(json.JSONDecodeError, OSError):
             custom = json.loads(custom_path.read_text())
 
     return built_in, remote, custom

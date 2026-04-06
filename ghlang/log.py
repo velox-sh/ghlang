@@ -31,41 +31,41 @@ class Logger:
         return self._console
 
     def configure(self, verbose: bool = False, quiet: bool = False) -> None:
-        """Configure verbosity level"""
+        """Configure verbosity level."""
         self._verbose = verbose
         self._quiet = quiet
 
     def info(self, msg: str) -> None:
-        """Log an info message"""
+        """Log an info message."""
         if not self._quiet:
             self.console.print(f"[blue]INFO[/]     {msg}")
 
     def debug(self, msg: str) -> None:
-        """Log a debug message (only shown in verbose mode)"""
+        """Log a debug message (only shown in verbose mode)."""
         if self._verbose and not self._quiet:
             self.console.print(f"[dim]DEBUG    {msg}[/]")
 
     def success(self, msg: str) -> None:
-        """Log a success message"""
+        """Log a success message."""
         if not self._quiet:
             self.console.print(f"[green]SUCCESS[/]  {msg}")
 
     def warning(self, msg: str) -> None:
-        """Log a warning message"""
+        """Log a warning message."""
         self.console.print(f"[yellow]WARNING[/]  {msg}")
 
     def error(self, msg: str) -> None:
-        """Log an error message"""
+        """Log an error message."""
         self.console.print(f"[red]ERROR[/]    {msg}")
 
     def exception(self, msg: str) -> None:
-        """Log an exception with traceback"""
+        """Log an exception with traceback."""
         self.console.print(f"[red]ERROR[/]    {msg}")
         if self._verbose:
             self.console.print_exception()
 
     def progress(self) -> Progress:
-        """Create a progress bar for long-running operations"""
+        """Create a progress bar for long-running operations."""
         from rich.progress import BarColumn
         from rich.progress import Progress
         from rich.progress import SpinnerColumn
@@ -83,7 +83,7 @@ class Logger:
         )
 
     def spinner(self) -> Progress:
-        """Create a spinner for indeterminate operations"""
+        """Create a spinner for indeterminate operations."""
         from rich.progress import Progress
         from rich.progress import SpinnerColumn
         from rich.progress import TextColumn

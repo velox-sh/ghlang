@@ -4,6 +4,7 @@ from pathlib import Path
 import yaml
 
 from ghlang import constants
+from ghlang import exceptions
 from ghlang import log
 
 from . import client
@@ -46,6 +47,6 @@ def load_github_colors(output_file: Path | None = None) -> dict[str, str]:
 
         return colors
 
-    except Exception as e:
+    except (exceptions.RequestError, exceptions.HTTPError, yaml.YAMLError, OSError) as e:
         log.logger.warning(f"Couldn't load GitHub colors: {e}")
         return {}

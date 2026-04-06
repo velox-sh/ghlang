@@ -1,4 +1,4 @@
-"""Cozette bitmap font loader and text renderer"""
+"""Cozette bitmap font loader and text renderer."""
 
 from functools import lru_cache
 from pathlib import Path
@@ -50,7 +50,8 @@ def render_text(text: str, color: tuple[int, int, int], scale: int = 1) -> Image
 
     # replace white foreground pixels with the requested color
     pixels = img.load()
-    assert pixels is not None
+    if pixels is None:
+        raise ValueError("failed to load pixel data")
 
     for py in range(h):
         for px in range(w):

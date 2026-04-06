@@ -1,12 +1,18 @@
-from typing import Any
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+
+if TYPE_CHECKING:
+    from .net import client
 
 
 class GhlangError(Exception):
-    """Base exception for ghlang"""
+    """Base exception for ghlang."""
 
 
 class ConfigError(GhlangError):
-    """Raised when config is invalid or missing"""
+    """Raised when config is invalid or missing."""
 
 
 class MissingTokenError(ConfigError):
@@ -51,11 +57,11 @@ class TokountError(GhlangError):
 
 
 class TokountArgumentError(TokountError):
-    """Raised when tokount is called with invalid arguments"""
+    """Raised when tokount is called with invalid arguments."""
 
 
 class TokountNotFoundError(TokountError):
-    """Raised when tokount binary is not found in PATH"""
+    """Raised when tokount binary is not found in PATH."""
 
     def __init__(
         self,
@@ -73,7 +79,7 @@ class TokountNotFoundError(TokountError):
 
 
 class TokountIoError(TokountError):
-    """Raised when tokount encounters an IO error"""
+    """Raised when tokount encounters an IO error."""
 
 
 class HTTPError(GhlangError):
@@ -81,14 +87,14 @@ class HTTPError(GhlangError):
 
     Attributes
     ----------
-    response : Any
+    response : client.Response
         The response object that triggered the error. Has ``status_code`` and ``url``.
     """
 
-    def __init__(self, response: Any) -> None:
+    def __init__(self, response: client.Response) -> None:
         self.response = response
         super().__init__(f"{response.status_code} {response.url}")
 
 
 class RequestError(GhlangError):
-    """Network-level error (DNS, connection refused, timeout, etc.)"""
+    """Network-level error (DNS, connection refused, timeout, etc.)."""

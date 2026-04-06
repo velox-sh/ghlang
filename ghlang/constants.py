@@ -3,14 +3,14 @@ from typing import Final
 
 
 # config defaults
-DEFAULT_IGNORED_DIRS: list[str] = [
+DEFAULT_IGNORED_DIRS: Final[tuple[str, ...]] = (
     "node_modules",
     "vendor",
     ".git",
     "dist",
     "build",
     "__pycache__",
-]
+)
 DEFAULT_OUTPUT_DIR: Final = "~/Documents/ghlang-stats"
 
 # GitHub API

@@ -1,4 +1,4 @@
-"""Tokount-to-linguist language mapping and normalization"""
+"""Tokount-to-linguist language mapping and normalization."""
 
 # explicit mapping table
 # - string value: map tokount name to linguist name

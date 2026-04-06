@@ -1,6 +1,9 @@
+from typing import Final
+
+
 """Chart color themes"""
 
-THEMES: dict[str, dict[str, str]] = {
+THEMES: Final[dict[str, dict[str, str]]] = {
     "light": {
         "background": "#ffffff",
         "text": "#1a1a1a",

@@ -55,7 +55,7 @@ class Config:
     ignored_repos: list[str] = field(default_factory=list)
 
     # Tokount settings
-    ignored_dirs: list[str] = field(default_factory=constants.DEFAULT_IGNORED_DIRS.copy)
+    ignored_dirs: list[str] = field(default_factory=lambda: list(constants.DEFAULT_IGNORED_DIRS))
 
     # Output settings
     output_dir: Path = field(default_factory=lambda: Path(constants.DEFAULT_OUTPUT_DIR))
@@ -195,7 +195,7 @@ def load_config(
         affiliation=github.get("affiliation", Config.affiliation),
         visibility=github.get("visibility", Config.visibility),
         ignored_repos=github.get("ignored_repos", []),
-        ignored_dirs=tokount.get("ignored_dirs", constants.DEFAULT_IGNORED_DIRS.copy()),
+        ignored_dirs=tokount.get("ignored_dirs", list(constants.DEFAULT_IGNORED_DIRS)),
         output_dir=Path(output.get("directory", constants.DEFAULT_OUTPUT_DIR)).expanduser(),
         verbose=preferences.get("verbose", Config.verbose),
         theme=preferences.get("theme", Config.theme),
