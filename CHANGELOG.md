@@ -10,6 +10,7 @@
 <details>
   <summary>Table of Contents</summary>
   <ol>
+    <li><a href="#v253--drop-pyyaml--security-fix">v2.5.3</a></li>
     <li><a href="#v252--drop-requests--restructure">v2.5.2</a></li>
     <li><a href="#v251--startup-optimization">v2.5.1</a></li>
     <li><a href="#v250--chart-styles">v2.5.0</a></li>
@@ -35,6 +36,18 @@
     <li><a href="#v100--initial-release">v1.0.0</a></li>
   </ol>
 </details>
+
+## v2.5.3 - Drop PyYAML, security fix
+
+**Changed:**
+
+- Replaced `pyyaml` with a targeted regex parser for linguist YAML (85x faster, 457ms -> 5ms)
+
+**Fixed:**
+
+- Bumped Pygments to 2.20.0 (ReDoS vulnerability in `AdlLexer`)
+
+<p align="right">(<a href="#changelog-top">back to top</a>)</p>
 
 ## v2.5.2 - Drop requests, restructure
 
