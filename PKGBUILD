@@ -11,7 +11,6 @@ depends=(
 	python
 	python-matplotlib
 	python-pillow
-	python-yaml
 	python-rich
 	python-typer
 	python-bdfparser
