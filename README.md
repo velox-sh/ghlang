@@ -19,7 +19,7 @@
 
   <h1>ghlang</h1>
 
-  <h3 align="center">Visualize your GitHub language stats, blazingly fast.</h3>
+  <h3 align="center">Generate pretty charts for your GitHub language stats.</h3>
 </div>
 
 <!-- TABLE OF CONTENTS -->

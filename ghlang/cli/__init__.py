@@ -50,7 +50,7 @@ class _LazyGroup(TyperGroup):
 
 
 app = typer.Typer(
-    help="Visualize your GitHub language stats, blazingly fast.",
+    help="Generate pretty charts for your GitHub language stats.",
     add_completion=True,
     cls=_LazyGroup,
 )

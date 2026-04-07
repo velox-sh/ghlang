@@ -1,7 +1,7 @@
 [project]
 name = "ghlang"
 version = "2.5.2"
-description = "Visualize your GitHub language stats, blazingly fast."
+description = "Generate pretty charts for your GitHub language stats."
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
@@ -38,11 +38,11 @@ classifiers = [
     "Typing :: Typed",
 ]
 dependencies = [
-    "tomli>=2.4.1; python_version < '3.11'",
     "typer>=0.24.1",
     "rich>=14.3.3",
-    "matplotlib>=3.10.8",
+    "tomli>=2.4.1; python_version < '3.11'",
     "pillow>=12.2.0",
+    "matplotlib>=3.10.8",
     "bdfparser>=2.2.0",
 ]
 
