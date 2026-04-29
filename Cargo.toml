@@ -15,16 +15,16 @@ path = "src/lib.rs"
 crate-type = ["cdylib"]
 
 [dependencies]
-chrono = { version = "0.4.42", features = ["serde"] }
-dirs = "6.0.0"
-pyo3 = { version = "0.28.3", features = ["extension-module"] }
-serde = { version = "1.0.228", features = ["derive"] }
-serde_json = "1.0.149"
-thiserror = "2.0.18"
+chrono = { version = "0.4.42", default-features = false, features = ["clock", "serde", "std"] }
+dirs = { version = "6.0.0", default-features = false }
+pyo3 = { version = "0.28.3", default-features = false, features = ["extension-module", "macros"] }
+serde = { version = "1.0.228", default-features = false, features = ["derive", "std"] }
+serde_json = { version = "1.0.149", default-features = false, features = ["std"] }
+thiserror = { version = "2.0.18", default-features = false }
 
 [dev-dependencies]
-proptest = "1.8.0"
-tempfile = "3.27.0"
+proptest = { version = "1.8.0", default-features = false, features = ["std"] }
+tempfile = { version = "3.27.0", default-features = false }
 
 [lints.rust]
 unsafe_code = "forbid"
