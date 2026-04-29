@@ -14,6 +14,7 @@ Full rewrite. Rust core wrapped by a thin Python CLI, shipped as one maturin whe
 - Pre-commit hooks for `cargo fmt` + `cargo clippy`
 - `fetch::types` module with `Stats`, `Target`, `LanguageStat` - serde JSON round-trip, schema-versioned, sort-on-construct, fraction recomputation
 - `proptest` invariants: round-trip stability, fraction sum, sort order, no-panic on adversarial sizes
+- `fetch::cache` module: XDG-rooted JSON cache with `read` (TTL + schema gating), `write` (pretty JSON), `prune` (stale + corrupted), `default_cache_root()` resolver
 
 ### Changed
 

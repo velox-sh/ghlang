@@ -2,6 +2,7 @@ use std::env;
 use std::fs;
 use std::io;
 use std::path::PathBuf;
+use std::time::Duration as StdDuration;
 
 use chrono::DateTime;
 use chrono::Duration;
@@ -71,6 +72,43 @@ impl Cache {
         }
 
         Ok(Some(stats))
+    }
+
+    /// Remove cache entries older than `older_than`. Corrupted JSON is also removed.
+    /// A missing users/ directory is not an error - returns 0.
+    pub fn prune(&self, older_than: StdDuration) -> Result<u32, CacheError> {
+        let users_dir = self.root.join("users");
+        let entries = match fs::read_dir(&users_dir) {
+            Ok(e) => e,
+            Err(e) if e.kind() == io::ErrorKind::NotFound => return Ok(0),
+            Err(e) => return Err(e.into()),
+        };
+
+        let cutoff = Utc::now() - Duration::from_std(older_than).unwrap_or_default();
+        let mut removed = 0u32;
+
+        for entry in entries {
+            let entry = entry?;
+            let path = entry.path();
+            if path.extension().and_then(|s| s.to_str()) != Some("json") {
+                continue;
+            }
+
+            let Ok(bytes) = fs::read(&path) else {
+                continue;
+            };
+
+            let stale = match serde_json::from_slice::<Stats>(&bytes) {
+                Ok(stats) => stats.fetched_at < cutoff,
+                Err(_) => true,
+            };
+            if stale {
+                fs::remove_file(&path)?;
+                removed += 1;
+            }
+        }
+
+        Ok(removed)
     }
 }
 
@@ -206,5 +244,48 @@ mod tests {
         fs::write(users.join("bad.json"), b"not json").unwrap();
 
         assert!(cache.read("bad", 24).unwrap().is_none());
+    }
+
+    #[test]
+    fn prune_removes_stale_keeps_fresh() {
+        use chrono::TimeZone;
+
+        let dir = tempdir().unwrap();
+        let cache = Cache::new(dir.path().to_path_buf());
+
+        let fresh = sample_stats();
+        cache.write("fresh", &fresh).unwrap();
+
+        let mut stale = sample_stats();
+        stale.fetched_at = Utc.with_ymd_and_hms(2020, 1, 1, 0, 0, 0).unwrap();
+        cache.write("stale", &stale).unwrap();
+
+        let removed = cache
+            .prune(StdDuration::from_secs(60 * 60 * 24 * 30))
+            .unwrap();
+        assert_eq!(removed, 1);
+
+        assert!(cache.read("fresh", 9999).unwrap().is_some());
+        assert!(!dir.path().join("users").join("stale.json").exists());
+    }
+
+    #[test]
+    fn prune_on_missing_dir_returns_zero() {
+        let dir = tempdir().unwrap();
+        let cache = Cache::new(dir.path().join("does-not-exist"));
+        assert_eq!(cache.prune(StdDuration::from_secs(60)).unwrap(), 0);
+    }
+
+    #[test]
+    fn prune_removes_corrupted_json() {
+        let dir = tempdir().unwrap();
+        let cache = Cache::new(dir.path().to_path_buf());
+        let users = dir.path().join("users");
+        fs::create_dir_all(&users).unwrap();
+        fs::write(users.join("bad.json"), b"not json").unwrap();
+
+        let removed = cache.prune(StdDuration::from_secs(60)).unwrap();
+        assert_eq!(removed, 1);
+        assert!(!users.join("bad.json").exists());
     }
 }
