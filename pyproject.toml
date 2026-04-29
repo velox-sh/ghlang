@@ -45,7 +45,7 @@ dependencies = [
   "bdfparser>=2.2.0",
   "matplotlib>=3.10.9",
   "pillow>=12.2.0",
-  "rich>=14.3.3",
+  "rich>=15.0.0",
   "tomli>=2.4.1; python_version < '3.11'",
   "typer>=0.24.1",
 ]
