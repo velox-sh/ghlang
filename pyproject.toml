@@ -1,57 +1,46 @@
 [build-system]
-requires = ["hatchling>=1.29.0"]
-build-backend = "hatchling.build"
+requires = ["maturin>=1.11,<2.0"]
+build-backend = "maturin"
 
 [project]
 name = "ghlang"
-version = "2.5.5"
+version = "3.0.0-dev"
 description = "Generate pretty language-stats charts for your GitHub profile or local codebase."
 readme = "README.md"
 requires-python = ">=3.10"
 license = "MIT"
 license-files = ["LICENSE"]
 authors = [
-    { name = "MihaiStreames", email = "72852703+MihaiStreames@users.noreply.github.com" },
+  { name = "MihaiStreames", email = "72852703+MihaiStreames@users.noreply.github.com" },
 ]
 keywords = [
-  "analytics",
-  "charts",
   "cli",
-  "code-analysis",
-  "developer-tools",
   "github",
-  "metrics",
-  "programming-languages",
-  "statistics",
-  "visualization",
+  "language-stats",
+  "svg",
+  "github-action",
+  "rust",
 ]
 classifiers = [
-  "Development Status :: 4 - Beta",
+  "Development Status :: 3 - Alpha",
   "Environment :: Console",
   "Intended Audience :: Developers",
   "Operating System :: OS Independent",
   "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3 :: Only",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",
-  "Programming Language :: Python :: 3.14",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Rust",
   "Topic :: Software Development :: Libraries :: Python Modules",
   "Topic :: Utilities",
   "Typing :: Typed",
 ]
-dependencies = [
-  "bdfparser>=2.2.0",
-  "matplotlib>=3.10.9",
-  "pillow>=12.2.0",
-  "rich>=14.3.3",
-  "tomli>=2.4.1; python_version < '3.11'",
-  "typer>=0.24.1",
-]
+dependencies = []
 
 [project.scripts]
-ghlang = "ghlang.cli:app"
+ghlang = "ghlang._cli:main"
 
 [project.urls]
 Changelog = "https://github.com/MihaiStreames/ghlang/blob/master/CHANGELOG.md"
@@ -61,35 +50,19 @@ Repository = "https://github.com/MihaiStreames/ghlang"
 
 [project.optional-dependencies]
 dev = [
-  "hypothesis>=6.152.4",
+  "maturin>=1.11",
   "pytest>=9.0.3",
-  "pytest-cov>=7.1.0",
-  "pytest-snapshot>=0.9.0",
   "ruff>=0.15.12",
   "ssort>=0.16.0",
   "ty>=0.0.33",
 ]
 
-[tool.hatch.build.targets.wheel]
-packages = ["src/ghlang"]
-
-[tool.hatch.build.targets.sdist]
-include = ["src/ghlang/**", "tests/**", "LICENSE", "README.md", "CHANGELOG.md"]
+[tool.maturin]
+python-source = "python"
+python-packages = ["ghlang"]
+module-name = "ghlang._core"
+strip = true
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-pythonpath = ["src"]
 filterwarnings = ["ignore::DeprecationWarning"]
-
-[tool.coverage.run]
-source = ["src/ghlang"]
-
-[tool.coverage.report]
-show_missing = true
-skip_empty = true
-exclude_lines = [
-  "pragma: no cover",
-  "if __name__ == .__main__.",
-  "if TYPE_CHECKING:",
-  "pass",
-]

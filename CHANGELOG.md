@@ -2,6 +2,29 @@
 
 All notable changes to this project.
 
+## [3.0.0] - Unreleased
+
+Full rewrite. Rust core wrapped by a thin Python CLI, shipped as one maturin wheel. SVG output replaces PNG. v1.x stays installable on PyPI for users who need PNG.
+
+### Added
+
+- `Cargo.toml`, `src/lib.rs`, `src/python.rs` - single-crate Rust extension (`ghlang._core`), `crate-type = ["cdylib"]`, never published
+- `python/ghlang/` - re-exports from the compiled extension; `py.typed` + `_core.pyi` stubs
+- `rust-toolchain.toml`, `clippy.toml`, `rustfmt.toml` - toolchain pinned to stable + edition 2024 + rust 1.92
+- Pre-commit hooks for `cargo fmt` + `cargo clippy`
+
+### Changed
+
+- Build backend swapped from hatchling to maturin
+- CI uses `uv` for Python tooling; Rust matrix runs `cargo fmt`, `cargo clippy`, `cargo test`
+
+### Removed
+
+- Old Python implementation under `src/ghlang/` (PIL + matplotlib + urllib)
+- `tests/test_*.py` - all v1 tests retired with the Python tree
+- `themes/manifest.json` - replaced by per-theme TOML files in v3
+- Benchmark scripts under `scripts/`
+
 ## [2.5.5] - 2026-04-09
 
 ### Fixed

@@ -1,8 +1,0 @@
-{
-  "label": "",
-  "message": "ghlang",
-  "logoSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"6 6 20 20\" shape-rendering=\"crispEdges\"><rect x=\"6\" y=\"6\" width=\"4\" height=\"4\" fill=\"#1a1428\"/><rect x=\"10\" y=\"6\" width=\"4\" height=\"4\" fill=\"#1a1428\"/><rect x=\"6\" y=\"10\" width=\"4\" height=\"12\" fill=\"#1a1428\"/><rect x=\"10\" y=\"18\" width=\"4\" height=\"4\" fill=\"#1a1428\"/><rect x=\"10\" y=\"22\" width=\"4\" height=\"4\" fill=\"#1a1428\"/><rect x=\"18\" y=\"10\" width=\"4\" height=\"4\" fill=\"#1a1428\"/><rect x=\"22\" y=\"10\" width=\"4\" height=\"4\" fill=\"#1a1428\"/><rect x=\"22\" y=\"14\" width=\"4\" height=\"12\" fill=\"#1a1428\"/><rect x=\"18\" y=\"22\" width=\"4\" height=\"4\" fill=\"#1a1428\"/><rect x=\"14\" y=\"22\" width=\"4\" height=\"4\" fill=\"#1a1428\"/></svg>",
-  "logoWidth": 10,
-  "labelColor": "#ff6b9d",
-  "color": "#1a1428"
-}

@@ -1,9 +1,0 @@
-{
-  "nord": {
-    "background": "#2e3440",
-    "text": "#d8dee9",
-    "secondary": "#aaa",
-    "legend_bg": "#3b4252",
-    "fallback": "#555"
-  }
-}

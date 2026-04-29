@@ -12,6 +12,21 @@ dist/
 sdist/
 wheels/
 
+# Rust
+target/
+Cargo.lock.bak
+
+# Maturin
+*.so
+*.pyd
+*.dylib
+
+# Inspirations (read-only, not part of source)
+insp/
+
+# Design docs not pushed to remote
+SPEC.md
+
 # Test / coverage
 .coverage
 .coverage.*

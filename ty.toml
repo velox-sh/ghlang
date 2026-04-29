@@ -3,7 +3,7 @@ python-version = "3.10"
 python = ".venv"
 
 [src]
-include = ["src/ghlang", "tests"]
+include = ["python/ghlang", "tests"]
 
 [rules]
 all = "error"
@@ -14,4 +14,4 @@ ignore-comment-unknown-rule = "error"
 
 [analysis]
 respect-type-ignore-comments = true
-allowed-unresolved-imports = ["tomli"]
+allowed-unresolved-imports = ["ghlang._core"]

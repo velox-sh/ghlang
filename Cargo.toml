@@ -1,0 +1,31 @@
+[package]
+name = "ghlang-core"
+version = "3.0.0-dev"
+description = "Generate pretty language-stats charts for your GitHub profile or local codebase."
+authors = ["MihaiStreames <72852703+MihaiStreames@users.noreply.github.com>"]
+license = "MIT"
+repository = "https://github.com/MihaiStreames/ghlang"
+edition = "2024"
+rust-version = "1.92"
+publish = false
+
+[lib]
+name = "ghlang_core"
+path = "src/lib.rs"
+crate-type = ["cdylib"]
+
+[dependencies]
+pyo3 = { version = "0.28.3", features = ["extension-module"] }
+
+[lints.rust]
+unsafe_code = "forbid"
+
+[lints.clippy]
+all = { level = "deny", priority = -1 }
+pedantic = { level = "warn", priority = -1 }
+cast_possible_truncation = "allow"
+cast_possible_wrap = "allow"
+cast_sign_loss = "allow"
+missing_errors_doc = "allow"
+missing_panics_doc = "allow"
+module_name_repetitions = "allow"
