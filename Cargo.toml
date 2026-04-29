@@ -27,7 +27,7 @@ proptest = { version = "1.8.0", default-features = false, features = ["std"] }
 tempfile = { version = "3.27.0", default-features = false }
 
 [lints.rust]
-unsafe_code = "forbid"
+unsafe_code = "deny"
 
 [lints.clippy]
 all = { level = "deny", priority = -1 }

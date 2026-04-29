@@ -33,8 +33,9 @@ pub struct Stats {
 }
 
 impl Stats {
-    /// Build a `Stats` and enforce invariants: languages sorted by bytes desc, fractions
-    /// recomputed from `total_bytes`.
+    /// Build a `Stats` and enforce invariants:
+    /// - languages sorted by bytes desc, fractions
+    /// - recomputed from `total_bytes`.
     #[must_use]
     pub fn new(
         target: Target,
