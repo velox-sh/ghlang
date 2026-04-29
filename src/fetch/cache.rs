@@ -1,9 +1,14 @@
 use std::env;
 use std::fs;
+use std::io;
 use std::path::PathBuf;
 
+use chrono::DateTime;
+use chrono::Duration;
+use chrono::Utc;
 use thiserror::Error;
 
+use crate::fetch::types::SCHEMA_VERSION;
 use crate::fetch::types::Stats;
 
 #[derive(Debug, Error)]
@@ -39,6 +44,39 @@ impl Cache {
         fs::write(path, json)?;
         Ok(())
     }
+
+    /// Read stats for `key`. Returns `Ok(None)` when:
+    /// - the file is missing
+    /// - the JSON is corrupted
+    /// - the `schema_version` differs from the current build
+    /// - the entry is older than `ttl_hours`
+    pub fn read(&self, key: &str, ttl_hours: u32) -> Result<Option<Stats>, CacheError> {
+        let path = self.user_path(key);
+        let bytes = match fs::read(&path) {
+            Ok(b) => b,
+            Err(e) if e.kind() == io::ErrorKind::NotFound => return Ok(None),
+            Err(e) => return Err(e.into()),
+        };
+
+        let stats: Stats = match serde_json::from_slice(&bytes) {
+            Ok(s) => s,
+            Err(_) => return Ok(None),
+        };
+
+        if stats.schema_version != SCHEMA_VERSION {
+            return Ok(None);
+        }
+        if is_expired(stats.fetched_at, ttl_hours) {
+            return Ok(None);
+        }
+
+        Ok(Some(stats))
+    }
+}
+
+fn is_expired(fetched_at: DateTime<Utc>, ttl_hours: u32) -> bool {
+    let ttl = Duration::hours(i64::from(ttl_hours));
+    Utc::now() - fetched_at > ttl
 }
 
 /// Resolve the default cache root.
@@ -115,5 +153,58 @@ mod tests {
         let bytes = fs::read(&path).unwrap();
         let back: Stats = serde_json::from_slice(&bytes).unwrap();
         assert_eq!(stats, back);
+    }
+
+    #[test]
+    fn read_missing_returns_none() {
+        let dir = tempdir().unwrap();
+        let cache = Cache::new(dir.path().to_path_buf());
+        assert!(cache.read("nobody", 24).unwrap().is_none());
+    }
+
+    #[test]
+    fn write_then_read_roundtrip() {
+        let dir = tempdir().unwrap();
+        let cache = Cache::new(dir.path().to_path_buf());
+        let stats = sample_stats();
+
+        cache.write("u", &stats).unwrap();
+        let back = cache.read("u", 24).unwrap().expect("hit");
+        assert_eq!(stats, back);
+    }
+
+    #[test]
+    fn read_expired_returns_none() {
+        use chrono::TimeZone;
+
+        let dir = tempdir().unwrap();
+        let cache = Cache::new(dir.path().to_path_buf());
+        let mut stats = sample_stats();
+        stats.fetched_at = Utc.with_ymd_and_hms(2020, 1, 1, 0, 0, 0).unwrap();
+
+        cache.write("u", &stats).unwrap();
+        assert!(cache.read("u", 24).unwrap().is_none());
+    }
+
+    #[test]
+    fn read_schema_mismatch_returns_none() {
+        let dir = tempdir().unwrap();
+        let cache = Cache::new(dir.path().to_path_buf());
+        let mut stats = sample_stats();
+        stats.schema_version = SCHEMA_VERSION + 99;
+
+        cache.write("u", &stats).unwrap();
+        assert!(cache.read("u", 24).unwrap().is_none());
+    }
+
+    #[test]
+    fn read_corrupted_json_returns_none() {
+        let dir = tempdir().unwrap();
+        let cache = Cache::new(dir.path().to_path_buf());
+        let users = dir.path().join("users");
+        fs::create_dir_all(&users).unwrap();
+        fs::write(users.join("bad.json"), b"not json").unwrap();
+
+        assert!(cache.read("bad", 24).unwrap().is_none());
     }
 }
