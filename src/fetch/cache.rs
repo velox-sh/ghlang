@@ -1,7 +1,10 @@
 use std::env;
+use std::fs;
 use std::path::PathBuf;
 
 use thiserror::Error;
+
+use crate::fetch::types::Stats;
 
 #[derive(Debug, Error)]
 pub enum CacheError {
@@ -22,9 +25,19 @@ impl Cache {
         Self { root }
     }
 
-    #[must_use]
-    pub fn root(&self) -> &PathBuf {
-        &self.root
+    fn user_path(&self, key: &str) -> PathBuf {
+        self.root.join("users").join(format!("{key}.json"))
+    }
+
+    /// Write stats for `key` as pretty JSON. Creates parent directories as needed.
+    pub fn write(&self, key: &str, stats: &Stats) -> Result<(), CacheError> {
+        let path = self.user_path(key);
+        if let Some(parent) = path.parent() {
+            fs::create_dir_all(parent)?;
+        }
+        let json = serde_json::to_vec_pretty(stats)?;
+        fs::write(path, json)?;
+        Ok(())
     }
 }
 
@@ -53,7 +66,26 @@ pub fn default_cache_root() -> PathBuf {
     reason = "env::set_var is unsafe in 2024 edition; only tests touch env"
 )]
 mod tests {
+    use chrono::Utc;
+    use tempfile::tempdir;
+
     use super::*;
+    use crate::fetch::types::LanguageStat;
+    use crate::fetch::types::Target;
+
+    fn sample_stats() -> Stats {
+        Stats::new(
+            Target::User("u".into()),
+            Utc::now(),
+            1,
+            vec![LanguageStat {
+                name: "Rust".into(),
+                bytes: 100,
+                fraction: 0.0,
+                colour: None,
+            }],
+        )
+    }
 
     #[test]
     fn default_root_respects_xdg_env() {
@@ -68,5 +100,20 @@ mod tests {
         }
 
         assert_eq!(root, PathBuf::from("/tmp/xdg-ghlang-test/ghlang"));
+    }
+
+    #[test]
+    fn write_creates_users_dir_and_pretty_json() {
+        let dir = tempdir().unwrap();
+        let cache = Cache::new(dir.path().to_path_buf());
+        let stats = sample_stats();
+
+        cache.write("torvalds", &stats).unwrap();
+
+        let path = dir.path().join("users").join("torvalds.json");
+        assert!(path.exists());
+        let bytes = fs::read(&path).unwrap();
+        let back: Stats = serde_json::from_slice(&bytes).unwrap();
+        assert_eq!(stats, back);
     }
 }
