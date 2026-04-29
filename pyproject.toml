@@ -43,7 +43,7 @@ classifiers = [
 ]
 dependencies = [
   "bdfparser>=2.2.0",
-  "matplotlib>=3.10.8",
+  "matplotlib>=3.10.9",
   "pillow>=12.2.0",
   "rich>=14.3.3",
   "tomli>=2.4.1; python_version < '3.11'",
