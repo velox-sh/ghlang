@@ -3,33 +3,33 @@ target-version = "py310"
 
 [lint]
 select = [
-    "E",
-    "W",
-    "F",
-    "I",
-    "N",
-    "UP",
-    "B",
-    "C4",
-    "SIM",
-    "ARG",
-    "PTH",
-    "RET",
-    "PL",
-    "PERF",
+  "E",
+  "W",
+  "F",
+  "I",
+  "N",
+  "UP",
+  "B",
+  "C4",
+  "SIM",
+  "ARG",
+  "PTH",
+  "RET",
+  "PL",
+  "PERF",
 ]
 ignore = [
-    "E501",
-    "PLR0913",
-    "PLR2004",
-    "RET504",
-    "SIM108",
-    "B008",
-    "B904",
-    "PLC0415",
-    "PLR0911",
-    "PLR0912",
-    "PLR0915",
+  "E501",
+  "PLR0913",
+  "PLR2004",
+  "RET504",
+  "SIM108",
+  "B008",
+  "B904",
+  "PLC0415",
+  "PLR0911",
+  "PLR0912",
+  "PLR0915",
 ]
 
 [format]
@@ -44,11 +44,11 @@ force-single-line = true
 force-sort-within-sections = true
 lines-after-imports = 2
 section-order = [
-    "future",
-    "standard-library",
-    "third-party",
-    "first-party",
-    "local-folder",
+  "future",
+  "standard-library",
+  "third-party",
+  "first-party",
+  "local-folder",
 ]
 
 [lint.pydocstyle]

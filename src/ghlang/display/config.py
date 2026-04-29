@@ -11,7 +11,6 @@ if TYPE_CHECKING:
 
 
 def _format_value(value: object) -> str:
-    """Format a config value with Rich markup"""
     if isinstance(value, bool):
         return "[green]true[/green]" if value else "[red]false[/red]"
 

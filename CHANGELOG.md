@@ -132,7 +132,7 @@ All notable changes to this project.
 
 ### Added
 
-- [`tokount`](https://github.com/velox-sh/tokount) integration; ~42x speedup in line counting
+- [`tokount`](https://github.com/MihaiStreames/tokount) integration; ~42x speedup in line counting
 - Centralized CLI environment setup and error handling
 - Structured error propagation from tokount via JSON
 

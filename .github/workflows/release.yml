@@ -2,25 +2,28 @@ name: Release
 
 on:
   push:
-    tags:
-      - "v*"
+    tags: ["v*"]
 
 permissions:
   contents: write
 
 jobs:
   release:
+    name: Create GitHub Release
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
 
-      - name: Extract release notes from changelog
+      - name: Extract release notes from CHANGELOG
         run: |
-          VERSION="${GITHUB_REF#refs/tags/}"
-          bash .github/workflows/scripts/extract_changelog.sh "$VERSION" > release_notes.md
+          version="${GITHUB_REF#refs/tags/v}"
+          bash .github/workflows/scripts/extract_changelog.sh "$version" > release_notes.md
 
       - name: Create GitHub release
         uses: softprops/action-gh-release@v3
         with:
           body_path: release_notes.md
           generate_release_notes: false
+          prerelease: ${{ contains(github.ref, '-rc') || contains(github.ref, '-beta') || contains(github.ref, '-alpha') }}

@@ -61,4 +61,4 @@ I'll review and merge it. Once it's in, everyone can use your theme after their 
 
 ## Questions?
 
-Open an [issue](https://github.com/velox-sh/ghlang/issues) if you need help or have questions about themes.
+Open an [issue](https://github.com/MihaiStreames/ghlang/issues) if you need help or have questions about themes.

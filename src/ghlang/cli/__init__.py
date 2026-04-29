@@ -1,5 +1,3 @@
-"""CLI entry point and command registration."""
-
 import importlib
 
 import click
@@ -8,6 +6,7 @@ from typer.core import TyperGroup
 from typer.main import CommandInfo
 from typer.main import get_command_from_info
 
+from ghlang import __doc__
 from ghlang import __version__
 
 
@@ -20,9 +19,8 @@ _LAZY_COMMANDS = {
 
 
 class _LazyGroup(TyperGroup):
-    """TyperGroup that defers command module imports until invoked"""
-
     def get_command(self, ctx: click.Context, cmd_name: str) -> click.Command | None:  # noqa: ARG002
+        """Return a command by name, lazily loading it if necessary."""
         if cmd_name in self.commands:
             return self.commands[cmd_name]
 
@@ -44,13 +42,14 @@ class _LazyGroup(TyperGroup):
         return None
 
     def list_commands(self, ctx: click.Context) -> list[str]:  # noqa: ARG002
+        """Return a list of command names, including lazy-loaded ones."""
         regular = list(self.commands.keys())
         lazy = [k for k in _LAZY_COMMANDS if k not in self.commands]
         return regular + lazy
 
 
 app = typer.Typer(
-    help="Generate pretty charts for your GitHub language stats.",
+    help=__doc__,
     add_completion=True,
     cls=_LazyGroup,
 )

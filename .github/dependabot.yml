@@ -1,6 +1,5 @@
 version: 2
 updates:
-  # Python dependencies
   - package-ecosystem: pip
     directory: /
     schedule:
@@ -11,8 +10,6 @@ updates:
       - python
     commit-message:
       prefix: "chore(deps)"
-
-  # GitHub Actions
   - package-ecosystem: github-actions
     directory: /
     schedule:

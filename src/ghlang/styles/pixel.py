@@ -12,7 +12,6 @@ from . import utils
 
 
 def _shade(rgb: tuple[int, int, int], f: float) -> tuple[int, int, int]:
-    """Scale an RGB color by factor *f*, clamping to 0-255"""
     r, g, b = rgb
     return min(255, max(0, int(r * f))), min(255, max(0, int(g * f))), min(255, max(0, int(b * f)))
 
@@ -23,7 +22,6 @@ def _build_segments(
     top_n: int,
     fallback: tuple[int, int, int],
 ) -> list[tuple[str, float, tuple[int, int, int], int, int]]:
-    """Build tower segments with pixel-grid y-offsets"""
     display = utils.build_display_segments(language_stats, top_n)
 
     colored = [
@@ -41,6 +39,7 @@ def _build_segments(
     ordered = list(reversed(colored))
     segs: list[tuple[str, float, tuple[int, int, int], int, int]] = []
     cursor = 0
+
     for i, (name, pct, color) in enumerate(ordered):
         h = (
             constants.PIXEL_TOWER_H - cursor
@@ -61,20 +60,43 @@ def _draw_iso_block(
     h_real: int,
     color: tuple[int, int, int],
 ) -> None:
-    """Draw a single isometric block with three shaded faces"""
+    # 2:1 dimetric projection (the "pixel-art isometric" used in classic
+    # SimCity / Habbo). Each iso axis steps 2 px right for every 1 px down,
+    # so a square footprint of side w projects to a diamond w wide and w/2
+    # tall. hw = w/2 is the diamond's half-width; qw = w/4 is the diamond's
+    # half-height (the vertical foreshortening factor).
     hw = w_real // 2
     qw = w_real // 4
+
+    # base_y is the screen-y of the block's bottom-front tip. Walk up by the
+    # vertical extent (h_real) plus the top diamond's full height (2*qw) to
+    # land on the top-back vertex.
     top_y = base_y - h_real - qw * 2
+
+    # top diamond vertices, traversed clockwise from back. back sits at top_y;
+    # left/right are qw lower (half a diamond); front_top is another qw lower,
+    # closing the rhombus.
     back = (cx, top_y)
     left = (cx - hw, top_y + qw)
     right = (cx + hw, top_y + qw)
     front_top = (cx, top_y + qw * 2)
+
+    # vertical side faces: drop straight down by h_real from the diamond's
+    # left/right/front vertices to get the bottom corners
     bot_left = (cx - hw, top_y + qw + h_real)
     bot_right = (cx + hw, top_y + qw + h_real)
     bot_front = (cx, top_y + qw * 2 + h_real)
+
+    # shade by face orientation to fake a top-left light: top cap brightest
+    # (1.28), left face mid (0.70), right face darkest (0.42). outline a touch
+    # darker than the darkest face so adjacent blocks have a clean seam.
     ec = _shade(color, 0.22)
+
+    # left face (front-left vertical quad)
     draw.polygon([left, front_top, bot_front, bot_left], fill=_shade(color, 0.70), outline=ec)
+    # right face (front-right vertical quad)
     draw.polygon([front_top, right, bot_right, bot_front], fill=_shade(color, 0.42), outline=ec)
+    # top cap diamond drawn last so its edges sit above the side faces
     draw.polygon([back, right, front_top, left], fill=_shade(color, 1.28), outline=ec)
 
 

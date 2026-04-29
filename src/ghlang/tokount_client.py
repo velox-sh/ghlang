@@ -8,7 +8,6 @@ from . import log
 
 
 def _find_tokount() -> Path:
-    """Locate the tokount binary in PATH"""
     tokount_path = shutil.which("tokount")
     if tokount_path is None:
         raise exceptions.TokountNotFoundError()
@@ -34,19 +33,16 @@ class TokountClient:
         self._tokount_path = _find_tokount()
 
     def _build_tokount_command(self, tokount_path: Path, path: Path) -> list[str]:
-        """Assemble the tokount CLI invocation"""
         cmd = [str(tokount_path), str(path.resolve()), "-o", "json"]
 
         if self._follow_symlinks:
             cmd.append("-L")
-
         if self._ignored_dirs:
             cmd.extend(["-e", ",".join(self._ignored_dirs)])
 
         return cmd
 
     def _parse_tokount_error(self, stderr: str) -> exceptions.TokountError | None:
-        """Parse tokount's JSON stderr into a typed exception"""
         try:
             data = json.loads(stderr)
         except json.JSONDecodeError:
@@ -77,7 +73,6 @@ class TokountClient:
         return exc_type(message, kind=kind, details=details)
 
     def _analyze_path(self, path: Path) -> dict:
-        """Run tokount on a file or directory and return raw JSON output"""
         cmd = self._build_tokount_command(self._tokount_path, path)
         log.logger.debug(f"Running: {' '.join(cmd)}")
 
@@ -102,7 +97,6 @@ class TokountClient:
 
         try:
             return dict(json.loads(result.stdout))
-
         except json.JSONDecodeError as e:
             log.logger.debug(f"Failed to parse tokount output: {result.stdout[:500]}")
             raise ValueError(f"Invalid JSON from tokount: {e}") from e

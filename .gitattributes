@@ -1,2 +1,13 @@
-# Auto detect text files and perform LF normalization
-* text=auto
+# force LF on all text files regardless of platform
+* text=auto eol=lf
+
+# binary files: never touch
+*.gif binary
+*.ico binary
+*.jpeg binary
+*.jpg binary
+*.pdf binary
+*.png binary
+*.webp binary
+*.woff binary
+*.woff2 binary

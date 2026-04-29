@@ -1,5 +1,3 @@
-"""Cozette bitmap font loader and text renderer."""
-
 from functools import lru_cache
 from pathlib import Path
 from typing import cast

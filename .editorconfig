@@ -11,10 +11,9 @@ indent_style = space
 indent_size = 4
 max_line_length = 100
 
-[*.sh]
+[*.{sh,bash}]
 indent_style = space
 indent_size = 2
-end_of_line = lf
 
 [*.toml]
 indent_style = space

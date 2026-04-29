@@ -15,7 +15,6 @@ _COLOR_RE = re.compile(r'^\s+color:\s*"(#[0-9A-Fa-f]{6})"', re.MULTILINE)
 
 
 def _parse_linguist_yaml(text: str) -> dict[str, str]:
-    """Extract language -> color mappings from linguist YAML text"""
     colors: dict[str, str] = {}
     current_lang: str | None = None
 

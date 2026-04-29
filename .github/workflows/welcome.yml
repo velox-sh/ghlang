@@ -6,6 +6,9 @@ on:
   issues:
     types: [opened]
 
+permissions:
+  contents: read
+
 jobs:
   welcome:
     runs-on: ubuntu-latest
@@ -17,10 +20,10 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           issue_message: |
-            Hey, thanks for opening your first issue!
+            Hey, thanks for opening your first issue! I will take a look soon.
 
-            I'll take a look soon. Just make sure you've included the info in the template (OS, version, steps to reproduce).
+            Make sure you have included the info in the template (OS, version, steps to reproduce) so I can help faster.
           pr_message: |
-            Hey, thanks for your first PR!
+            Hey, thanks for your first PR! I will review it soon.
 
-            I'll review it soon. Just make sure you've run `uv run ruff check` and `uv run ty check`.
+            Before pushing changes, run `uv run ruff check` and `uv run ty check` locally so CI stays green.

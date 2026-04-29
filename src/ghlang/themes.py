@@ -12,7 +12,6 @@ from .static import themes as static_themes
 
 
 def _fetch_remote_themes(cache_path: Path, force: bool = False) -> dict[str, dict[str, str]]:
-    """Fetch remote theme manifest with local cache"""
     cache_meta = cache_path.with_suffix(".json.meta")
 
     if not force and cache_path.exists() and cache_meta.exists():
@@ -40,7 +39,6 @@ def _fetch_remote_themes(cache_path: Path, force: bool = False) -> dict[str, dic
                 }
             )
         )
-
         return themes
 
     except (exceptions.RequestError, exceptions.HTTPError, json.JSONDecodeError, OSError) as e:

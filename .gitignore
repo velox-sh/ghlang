@@ -1,79 +1,42 @@
-# Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode,python
-# Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode,python
-
-### Python ###
-# Byte-compiled / optimized / DLL files
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
-
-# Distribution / packaging
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-share/python-wheels/
-*.egg-info/
-.installed.cfg
 *.egg
-MANIFEST
+*.egg-info/
+.eggs/
 
-# Unit test / coverage reports
-htmlcov/
-.tox/
-.nox/
+# Build / dist
+build/
+dist/
+sdist/
+wheels/
+
+# Test / coverage
 .coverage
 .coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*.cover
-*.py,cover
 .hypothesis/
 .pytest_cache/
-cover/
+coverage.xml
+htmlcov/
+
+# Tooling
+.ruff_cache/
+.ty_cache/
+.mypy_cache/
+.tox/
+.nox/
 
 # Environments
 .env
-.venv
-env/
+.venv/
 venv/
-ENV/
-env.bak/
-venv.bak/
 
-# ty
-.ty_cache/
+# Editors / OS
+.idea/
+.vscode/
+.DS_Store
 
-# ruff
-.ruff_cache/
-
-### VisualStudioCode ###
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-!.vscode/*.code-snippets
-
-# Local History for Visual Studio Code
-.history/
-
-# Built Visual Studio Code Extensions
-*.vsix
-
-### VisualStudioCode Patch ###
-# Ignore all local history of files
-.history
-.ionide
-
-# End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,python
+# LLMs / agent state
+.claude/
+CLAUDE.md

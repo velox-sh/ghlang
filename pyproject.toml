@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "ghlang"
 version = "2.5.5"
-description = "ghlang generates pretty language-stats charts for your GitHub profile or local codebase"
+description = "Generate pretty language-stats charts for your GitHub profile or local codebase."
 readme = "README.md"
 requires-python = ">=3.10"
 license = "MIT"
@@ -14,80 +14,82 @@ authors = [
     { name = "MihaiStreames", email = "72852703+MihaiStreames@users.noreply.github.com" },
 ]
 keywords = [
-    "analytics",
-    "charts",
-    "cli",
-    "code-analysis",
-    "developer-tools",
-    "github",
-    "metrics",
-    "programming-languages",
-    "statistics",
-    "visualization",
+  "analytics",
+  "charts",
+  "cli",
+  "code-analysis",
+  "developer-tools",
+  "github",
+  "metrics",
+  "programming-languages",
+  "statistics",
+  "visualization",
 ]
 classifiers = [
-    "Development Status :: 4 - Beta",
-    "Environment :: Console",
-    "Intended Audience :: Developers",
-    "Operating System :: OS Independent",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
-    "Programming Language :: Python :: 3.13",
-    "Programming Language :: Python :: 3.14",
-    "Topic :: Software Development :: Libraries :: Python Modules",
-    "Topic :: Software Development :: Quality Assurance",
-    "Topic :: Utilities",
-    "Typing :: Typed",
+  "Development Status :: 4 - Beta",
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+  "Topic :: Utilities",
+  "Typing :: Typed",
 ]
 dependencies = [
-    "bdfparser>=2.2.0",
-    "matplotlib>=3.10.8",
-    "pillow>=12.2.0",
-    "rich>=14.3.3",
-    "tomli>=2.4.1; python_version < '3.11'",
-    "typer>=0.24.1",
+  "bdfparser>=2.2.0",
+  "matplotlib>=3.10.8",
+  "pillow>=12.2.0",
+  "rich>=14.3.3",
+  "tomli>=2.4.1; python_version < '3.11'",
+  "typer>=0.24.1",
 ]
 
 [project.scripts]
 ghlang = "ghlang.cli:app"
 
 [project.urls]
-Changelog = "https://github.com/velox-sh/ghlang/blob/master/CHANGELOG.md"
-Homepage = "https://github.com/velox-sh/ghlang"
-Issues = "https://github.com/velox-sh/ghlang/issues"
-Repository = "https://github.com/velox-sh/ghlang"
+Changelog = "https://github.com/MihaiStreames/ghlang/blob/master/CHANGELOG.md"
+Homepage = "https://github.com/MihaiStreames/ghlang"
+Issues = "https://github.com/MihaiStreames/ghlang/issues"
+Repository = "https://github.com/MihaiStreames/ghlang"
 
 [project.optional-dependencies]
 dev = [
-    "pytest>=9.0.2",
-    "pytest-cov>=7.1.0",
-    "ruff>=0.15.9",
-    "ssort>=0.16.0",
-    "ty>=0.0.32",
+  "hypothesis>=6.152.4",
+  "pytest>=9.0.2",
+  "pytest-cov>=7.1.0",
+  "pytest-snapshot>=0.9.0",
+  "ruff>=0.15.9",
+  "ssort>=0.16.0",
+  "ty>=0.0.32",
 ]
 
 [tool.hatch.build.targets.wheel]
-packages = ["ghlang"]
+packages = ["src/ghlang"]
 
 [tool.hatch.build.targets.sdist]
-include = ["ghlang/**", "tests/**"]
+include = ["src/ghlang/**", "tests/**", "LICENSE", "README.md", "CHANGELOG.md"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+pythonpath = ["src"]
 filterwarnings = ["ignore::DeprecationWarning"]
 
 [tool.coverage.run]
-source = ["ghlang"]
+source = ["src/ghlang"]
 
 [tool.coverage.report]
 show_missing = true
 skip_empty = true
 exclude_lines = [
-    "pragma: no cover",
-    "if __name__ == .__main__.",
-    "if TYPE_CHECKING:",
-    "pass",
+  "pragma: no cover",
+  "if __name__ == .__main__.",
+  "if TYPE_CHECKING:",
+  "pass",
 ]

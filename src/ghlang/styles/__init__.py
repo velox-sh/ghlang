@@ -1,5 +1,3 @@
-"""Chart rendering styles."""
-
 from collections.abc import Callable
 from typing import Final
 

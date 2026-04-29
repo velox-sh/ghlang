@@ -25,7 +25,7 @@ LINGUIST_URL: Final = (
     "https://raw.githubusercontent.com/github/linguist/master/lib/linguist/languages.yml"
 )
 MANIFEST_URL: Final = (
-    "https://raw.githubusercontent.com/velox-sh/ghlang/master/themes/manifest.json"
+    "https://raw.githubusercontent.com/MihaiStreames/ghlang/master/themes/manifest.json"
 )
 
 # themes

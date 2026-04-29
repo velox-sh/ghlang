@@ -3,7 +3,7 @@ python-version = "3.10"
 python = ".venv"
 
 [src]
-include = ["ghlang", "tests"]
+include = ["src/ghlang", "tests"]
 
 [rules]
 all = "error"

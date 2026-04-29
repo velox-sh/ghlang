@@ -108,7 +108,6 @@ class Session:
         self.headers.update(headers)
 
     def _get_conn(self, host: str) -> HTTPSConnection:
-        """Get or create a persistent connection"""
         if not hasattr(self._local, "conns"):
             self._local.conns = {}
 
@@ -119,19 +118,16 @@ class Session:
         return conns[host]
 
     def _drop_conn(self, host: str) -> None:
-        """Close and discard a stale connection"""
         if hasattr(self._local, "conns"):
             self._local.conns.pop(host, None)
 
     def _do_get(self, conn: HTTPSConnection, path: str, url: str) -> Response:
-        """Execute a GET on an existing connection"""
         conn.request("GET", path, headers=self.headers)
         raw = conn.getresponse()
         body = raw.read().decode("utf-8")
         return Response(raw.status, raw.headers, body, url)
 
     def _log_rate_limit(self, response: Response) -> None:
-        """Log remaining API rate limit from response headers"""
         remaining = response.headers.get("X-RateLimit-Remaining")
         limit = response.headers.get("X-RateLimit-Limit")
 

@@ -21,7 +21,6 @@ def _fetch_repos(
     specific_repos: list[str] | None,
     repos_output: Path | None,
 ) -> list[dict]:
-    """Fetch repos from GitHub with progress display"""
     if specific_repos:
         log.logger.info(f"Fetching {len(specific_repos)} specific repos")
         repos = client.fetch_specific_repos(specific_repos)
@@ -45,7 +44,6 @@ def _aggregate_languages(
     repos: list[dict],
     stats_output: Path | None,
 ) -> dict[str, int]:
-    """Fetch and aggregate language stats across repos concurrently"""
     totals: defaultdict[str, int] = defaultdict(int)
     processed = 0
     skipped = 0

@@ -19,7 +19,6 @@ if TYPE_CHECKING:
 
 
 def _format_autocomplete(incomplete: str) -> list[str]:
-    """Return matching output format completions"""
     return [f for f in ["png", "svg"] if f.startswith(incomplete)]
 
 

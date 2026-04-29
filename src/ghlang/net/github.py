@@ -45,7 +45,6 @@ class GitHubClient:
         self._per_page = constants.API_PER_PAGE
 
     def _normalize_repo_pattern(self, pattern: str) -> str:
-        """Strip GitHub URL prefixes to get owner/repo"""
         prefixes = ["https://github.com/", "http://github.com/", "github.com/"]
 
         for prefix in prefixes:
@@ -55,12 +54,10 @@ class GitHubClient:
         return pattern
 
     def _validate_repo_name(self, repo_name: str) -> bool:
-        """Check that repo_name matches owner/repo format"""
         pattern = r"^[\w\-\.]+/[\w\-\.]+$"
         return bool(re.match(pattern, repo_name)) and len(repo_name) <= 100
 
     def _should_ignore_repo(self, full_name: str) -> bool:
-        """Return True if full_name matches any ignored-repo glob"""
         for pattern in self._ignored_repos:
             normalized = self._normalize_repo_pattern(pattern)
 
