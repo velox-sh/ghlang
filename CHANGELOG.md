@@ -12,6 +12,8 @@ Full rewrite. Rust core wrapped by a thin Python CLI, shipped as one maturin whe
 - `python/ghlang/` - re-exports from the compiled extension; `py.typed` + `_core.pyi` stubs
 - `rust-toolchain.toml`, `clippy.toml`, `rustfmt.toml` - toolchain pinned to stable + edition 2024 + rust 1.92
 - Pre-commit hooks for `cargo fmt` + `cargo clippy`
+- `fetch::types` module with `Stats`, `Target`, `LanguageStat` - serde JSON round-trip, schema-versioned, sort-on-construct, fraction recomputation
+- `proptest` invariants: round-trip stability, fraction sum, sort order, no-panic on adversarial sizes
 
 ### Changed
 
