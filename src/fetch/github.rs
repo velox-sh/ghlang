@@ -325,4 +325,124 @@ mod tests {
         assert_eq!(stats.languages[0].bytes, 700);
         assert_eq!(stats.languages[1].name, "Python");
     }
+
+    fn page_with(
+        has_next: bool,
+        cursor: Option<&str>,
+        lang: &str,
+        bytes: u64,
+    ) -> serde_json::Value {
+        json!({
+            "data": {
+                "user": {
+                    "repositories": {
+                        "pageInfo": { "hasNextPage": has_next, "endCursor": cursor },
+                        "nodes": [
+                            {
+                                "nameWithOwner": "u/r",
+                                "languages": {
+                                    "edges": [
+                                        { "size": bytes, "node": { "name": lang, "color": null } }
+                                    ]
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
+        })
+    }
+
+    #[tokio::test]
+    async fn fetch_user_paginates_two_pages() {
+        use wiremock::matchers::body_string_contains;
+
+        let server = MockServer::start().await;
+
+        // first page: no cursor in request body
+        Mock::given(method("POST"))
+            .and(path("/"))
+            .and(body_string_contains("\"after\":null"))
+            .respond_with(ResponseTemplate::new(200).set_body_json(page_with(
+                true,
+                Some("abc"),
+                "Rust",
+                100,
+            )))
+            .mount(&server)
+            .await;
+
+        // second page: cursor "abc" present in body
+        Mock::given(method("POST"))
+            .and(path("/"))
+            .and(body_string_contains("\"after\":\"abc\""))
+            .respond_with(
+                ResponseTemplate::new(200).set_body_json(page_with(false, None, "Python", 200)),
+            )
+            .mount(&server)
+            .await;
+
+        let client = Client::with_endpoint(server.uri(), "tok").unwrap();
+        let stats = client.fetch_user("u").await.unwrap();
+
+        assert_eq!(stats.total_bytes, 300);
+        assert_eq!(stats.repo_count, 2);
+        assert_eq!(stats.languages.len(), 2);
+    }
+
+    #[tokio::test]
+    async fn fetch_user_returns_unauthorized_on_401() {
+        let server = MockServer::start().await;
+        Mock::given(method("POST"))
+            .and(path("/"))
+            .respond_with(ResponseTemplate::new(401))
+            .mount(&server)
+            .await;
+
+        let client = Client::with_endpoint(server.uri(), "tok").unwrap();
+        let err = client.fetch_user("u").await.unwrap_err();
+        assert!(matches!(err, FetchError::Unauthorized), "got {err:?}");
+    }
+
+    #[tokio::test]
+    async fn fetch_user_returns_rate_limited_on_403() {
+        let server = MockServer::start().await;
+        Mock::given(method("POST"))
+            .and(path("/"))
+            .respond_with(
+                ResponseTemplate::new(403)
+                    .insert_header("x-ratelimit-remaining", "0")
+                    .insert_header("x-ratelimit-reset", "9999999999"),
+            )
+            .mount(&server)
+            .await;
+
+        let client = Client::with_endpoint(server.uri(), "tok").unwrap();
+        let err = client.fetch_user("u").await.unwrap_err();
+        assert!(
+            matches!(err, FetchError::RateLimited { remaining: 0, .. }),
+            "got {err:?}"
+        );
+    }
+
+    #[tokio::test]
+    async fn fetch_user_surfaces_graphql_errors() {
+        let server = MockServer::start().await;
+        let body = json!({
+            "data": null,
+            "errors": [{"message": "oops"}]
+        });
+        Mock::given(method("POST"))
+            .and(path("/"))
+            .respond_with(ResponseTemplate::new(200).set_body_json(body))
+            .mount(&server)
+            .await;
+
+        let client = Client::with_endpoint(server.uri(), "tok").unwrap();
+        let err = client.fetch_user("u").await.unwrap_err();
+        assert!(
+            matches!(&err, FetchError::GraphQL(msgs) if msgs == &vec!["oops".to_string()]),
+            "got {err:?}"
+        );
+    }
 }
