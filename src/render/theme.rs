@@ -72,3 +72,112 @@ fn builtin(name: &str) -> Option<&'static str> {
 const DEFAULT_TOML: &str = include_str!("../../themes/default.toml");
 const DARK_TOML: &str = include_str!("../../themes/dark.toml");
 const MONOKAI_TOML: &str = include_str!("../../themes/monokai.toml");
+const LINGUIST_COLORS_TOML: &str = include_str!("../static/languages.toml");
+
+impl Theme {
+    /// Resolve the colour for a language name.
+    /// Theme override wins, then the builtin linguist map, then `colors.fallback`.
+    #[must_use]
+    pub fn language_colour(&self, name: &str) -> &str {
+        if let Some(c) = self.language_colors.get(name) {
+            return c;
+        }
+        if let Some(c) = LINGUIST_COLOURS.get(name) {
+            return c;
+        }
+        &self.colors.fallback
+    }
+}
+
+static LINGUIST_COLOURS: std::sync::LazyLock<HashMap<String, String>> =
+    std::sync::LazyLock::new(|| {
+        toml::from_str::<HashMap<String, String>>(LINGUIST_COLORS_TOML).unwrap_or_default()
+    });
+
+#[cfg(test)]
+mod tests {
+    use std::io::Write;
+
+    use tempfile::NamedTempFile;
+
+    use super::*;
+
+    #[test]
+    fn loads_default_builtin() {
+        let theme = Theme::load("default").unwrap();
+        assert_eq!(theme.name, "default");
+        assert_eq!(theme.colors.background, "#ffffff");
+    }
+
+    #[test]
+    fn loads_dark_builtin() {
+        let theme = Theme::load("dark").unwrap();
+        assert_eq!(theme.name, "dark");
+    }
+
+    #[test]
+    fn loads_monokai_builtin() {
+        let theme = Theme::load("monokai").unwrap();
+        assert_eq!(theme.name, "monokai");
+    }
+
+    #[test]
+    fn loads_from_path() {
+        let mut f = NamedTempFile::new().unwrap();
+        writeln!(
+            f,
+            r##"
+name = "custom"
+description = "test"
+[colors]
+background = "#000"
+text = "#fff"
+muted = "#888"
+fallback = "#444"
+[fonts]
+family = "monospace"
+size = 12
+"##,
+        )
+        .unwrap();
+
+        let theme = Theme::load(f.path().to_str().unwrap()).unwrap();
+        assert_eq!(theme.name, "custom");
+    }
+
+    #[test]
+    fn invalid_toml_returns_parse_error() {
+        let mut f = NamedTempFile::new().unwrap();
+        writeln!(f, "not a toml file at all !!! [invalid").unwrap();
+
+        let err = Theme::load(f.path().to_str().unwrap()).unwrap_err();
+        assert!(matches!(err, ThemeError::Parse(_)), "got {err:?}");
+    }
+
+    #[test]
+    fn unknown_name_returns_not_found() {
+        let err = Theme::load("nonexistent-theme-xyz").unwrap_err();
+        assert!(matches!(err, ThemeError::NotFound(_)), "got {err:?}");
+    }
+
+    #[test]
+    fn theme_override_wins_over_linguist() {
+        let mut theme = Theme::load("default").unwrap();
+        theme
+            .language_colors
+            .insert("Rust".into(), "#000000".into());
+        assert_eq!(theme.language_colour("Rust"), "#000000");
+    }
+
+    #[test]
+    fn linguist_used_when_no_override() {
+        let theme = Theme::load("default").unwrap();
+        assert_eq!(theme.language_colour("Rust"), "#dea584");
+    }
+
+    #[test]
+    fn unknown_language_falls_back() {
+        let theme = Theme::load("default").unwrap();
+        assert_eq!(theme.language_colour("Made-Up"), &theme.colors.fallback);
+    }
+}
