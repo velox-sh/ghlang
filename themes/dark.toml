@@ -1,0 +1,12 @@
+name = "dark"
+description = "Dark theme - port of the v1.x dark"
+
+[colors]
+background = "#1a1a1a"
+text = "#f0f0f0"
+muted = "#a0a0a0"
+fallback = "#555555"
+
+[fonts]
+family = "JetBrains Mono, monospace"
+size = 14

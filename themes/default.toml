@@ -1,0 +1,12 @@
+name = "default"
+description = "Light theme - port of the v1.x default"
+
+[colors]
+background = "#ffffff"
+text = "#1a1a1a"
+muted = "#666666"
+fallback = "#cccccc"
+
+[fonts]
+family = "JetBrains Mono, monospace"
+size = 14

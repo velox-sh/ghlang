@@ -23,6 +23,7 @@ serde = { version = "1.0.228", default-features = false, features = ["derive", "
 serde_json = { version = "1.0.149", default-features = false, features = ["std"] }
 thiserror = { version = "2.0.18", default-features = false }
 tokio = { version = "1.51.0", default-features = false, features = ["rt", "macros"] }
+toml = { version = "0.9.7", default-features = false, features = ["parse", "serde", "std"] }
 
 [dev-dependencies]
 proptest = { version = "1.8.0", default-features = false, features = ["std"] }
