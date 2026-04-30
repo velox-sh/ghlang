@@ -16,6 +16,7 @@ Full rewrite. Rust core wrapped by a thin Python CLI, shipped as one maturin whe
 - `proptest` invariants: round-trip stability, fraction sum, sort order, no-panic on adversarial sizes
 - `fetch::cache` module: XDG-rooted JSON cache with `read` (TTL + schema gating), `write` (pretty JSON), `prune` (stale + corrupted), `default_cache_root()` resolver
 - `fetch::github` async GraphQL client: paginated query lifted from jstrieb (statistics.zig:252-283), maps 401 to `Unauthorized`, 403+`X-RateLimit-Remaining=0` to `RateLimited`, GraphQL errors array to `FetchError::GraphQL`. 5 wiremock-driven tests cover the happy path, pagination, 401, 403, and GraphQL errors.
+- `render::template` substitution engine: `{{ key }}` markers, whitespace tolerant, XML-escaped values by default, `_raw` suffix bypass for pre-rendered SVG fragments, `TemplateError::MissingKey` for unresolved markers. 8 unit tests.
 
 ### Changed
 
